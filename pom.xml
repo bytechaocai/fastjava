@@ -14,10 +14,20 @@
   <packaging>pom</packaging>
   <name>parent</name>
   <description>让每一笔支出都有记录。</description>
+  <modules>
+    <module>core</module>
+    <module>data</module>
+    <module>service</module>
+    <module>web</module>
+    <module>schedule</module>
+    <module>security</module>
+    <module>application</module>
+    <module>template</module>
+  </modules>
 
   <properties>
-    <maven.compiler.source>8</maven.compiler.source>
-    <maven.compiler.target>8</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
     <maven.compile.encoding>UTF-8</maven.compile.encoding>
     <project.report.outputEncoding>UTF-8</project.report.outputEncoding>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
