@@ -17,4 +17,14 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <groupId>com.bytechaocai.wallet</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.bytechaocai.wallet</groupId>
+      <artifactId>data</artifactId>
+    </dependency>
+  </dependencies>
 </project>

@@ -33,17 +33,65 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <version.mybatis>3.0.4</version.mybatis>
-    <version.junit5>5.9.3</version.junit5>
+    <version.junit5>5.12.2</version.junit5>
     <version.velocity>2.4.1</version.velocity>
+    <version.spring-boot>3.5.3</version.spring-boot>
+    <version.spring-boot-session>3.5.1</version.spring-boot-session>
+    <version.spring-boot-security-test>6.5.1</version.spring-boot-security-test>
+    <version.commons-lang>3.17.0</version.commons-lang>
+    <version.commons-io>2.19.0</version.commons-io>
+    <version.commons-collections>4.5.0</version.commons-collections>
+    <version.postgresql>42.7.7</version.postgresql>
+    <version.module>0.0.1-SNAPSHOT</version.module>
   </properties>
 
   <dependencyManagement>
+    <!--
+    依赖引用时尽量不要重复引用，让maven自己的依赖传递去引用。举例：
+    1.spirng-boot-web已经引入了spirng基础组件：core,context,beans,aop,tx,test等，就不要重复引入。
+    2.如果存在以下依赖：a->b->c->d，则只需要引入a，不要重复引入bcd。
+    以上规则不适用于项目自己的模块。
+    -->
 
     <dependencies>
+      <!--模块依赖 开始-->
+      <dependency>
+        <groupId>com.bytechaocai.wallet</groupId>
+        <artifactId>core</artifactId>
+        <version>${version.module}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.bytechaocai.wallet</groupId>
+        <artifactId>data</artifactId>
+        <version>${version.module}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.bytechaocai.wallet</groupId>
+        <artifactId>schedule</artifactId>
+        <version>${version.module}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.bytechaocai.wallet</groupId>
+        <artifactId>security</artifactId>
+        <version>${version.module}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.bytechaocai.wallet</groupId>
+        <artifactId>service</artifactId>
+        <version>${version.module}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.bytechaocai.wallet</groupId>
+        <artifactId>web</artifactId>
+        <version>${version.module}</version>
+      </dependency>
+      <!--模块依赖 结束-->
+
       <!--springboot 开始-->
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
+        <version>${version.spring-boot}</version>
       </dependency>
       <!--springboot 结束-->
 
@@ -51,16 +99,19 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-actuator</artifactId>
+        <version>${version.spring-boot}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-devtools</artifactId>
+        <version>${version.spring-boot}</version>
         <scope>runtime</scope>
         <optional>true</optional>
       </dependency>
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-configuration-processor</artifactId>
+        <version>${version.spring-boot}</version>
         <optional>true</optional>
       </dependency>
       <!--开发环境 结束-->
@@ -69,15 +120,17 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-data-jpa</artifactId>
+        <version>${version.spring-boot}</version>
       </dependency>
       <dependency>
         <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
+        <version>${version.postgresql}</version>
       </dependency>
       <dependency>
         <groupId>org.mybatis.spring.boot</groupId>
         <artifactId>mybatis-spring-boot-starter</artifactId>
-        <version>3.0.4</version>
+        <version>${version.mybatis}</version>
       </dependency>
       <!--数据库 结束-->
 
@@ -85,14 +138,17 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-security</artifactId>
+        <version>${version.spring-boot}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-validation</artifactId>
+        <version>${version.spring-boot}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.session</groupId>
         <artifactId>spring-session-core</artifactId>
+        <version>${version.spring-boot-session}</version>
       </dependency>
       <!--安全 结束-->
 
@@ -100,11 +156,13 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-test</artifactId>
+        <version>${version.spring-boot}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-test</artifactId>
+        <version>${version.spring-boot-security-test}</version>
         <scope>test</scope>
       </dependency>
       <!--junit5 -->
@@ -131,6 +189,23 @@
       </dependency>
       <!-- velocity引擎 结束-->
 
+      <!-- commons工具类 开始-->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${version.commons-lang}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${version.commons-io}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-collections4</artifactId>
+        <version>${version.commons-collections}</version>
+      </dependency>
+      <!-- commons工具类 结束-->
 
     </dependencies>
   </dependencyManagement>
