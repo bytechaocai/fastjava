@@ -42,13 +42,15 @@
     <version.commons-io>2.19.0</version.commons-io>
     <version.commons-collections>4.5.0</version.commons-collections>
     <version.postgresql>42.7.7</version.postgresql>
+    <version.slf4j>2.0.17</version.slf4j>
+    <version.logback>1.5.18</version.logback>
     <version.module>0.0.1-SNAPSHOT</version.module>
   </properties>
 
   <dependencyManagement>
     <!--
     依赖引用时尽量不要重复引用，让maven自己的依赖传递去引用。举例：
-    1.spirng-boot-web已经引入了spirng基础组件：core,context,beans,aop,tx,test等，就不要重复引入。
+    1.spring-boot-web已经引入了spring基础组件：core,context,beans,aop,tx,test等，就不要重复引入。
     2.如果存在以下依赖：a->b->c->d，则只需要引入a，不要重复引入bcd。
     以上规则不适用于项目自己的模块。
     -->
@@ -206,6 +208,24 @@
         <version>${version.commons-collections}</version>
       </dependency>
       <!-- commons工具类 结束-->
+
+      <!--日志 开始-->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${version.slf4j}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-core</artifactId>
+        <version>${version.logback}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${version.logback}</version>
+      </dependency>
+      <!--日志 结束-->
 
     </dependencies>
   </dependencyManagement>
