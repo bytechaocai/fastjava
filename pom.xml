@@ -8,7 +8,7 @@
     <version>3.5.3</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <groupId>com.bytechaocai.wallet</groupId>
+  <groupId>com.bytechaocai.fastjava</groupId>
   <artifactId>parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -58,32 +58,32 @@
     <dependencies>
       <!--模块依赖 开始-->
       <dependency>
-        <groupId>com.bytechaocai.wallet</groupId>
+        <groupId>com.bytechaocai.fastjava</groupId>
         <artifactId>core</artifactId>
         <version>${version.module}</version>
       </dependency>
       <dependency>
-        <groupId>com.bytechaocai.wallet</groupId>
+        <groupId>com.bytechaocai.fastjava</groupId>
         <artifactId>data</artifactId>
         <version>${version.module}</version>
       </dependency>
       <dependency>
-        <groupId>com.bytechaocai.wallet</groupId>
+        <groupId>com.bytechaocai.fastjava</groupId>
         <artifactId>schedule</artifactId>
         <version>${version.module}</version>
       </dependency>
       <dependency>
-        <groupId>com.bytechaocai.wallet</groupId>
+        <groupId>com.bytechaocai.fastjava</groupId>
         <artifactId>security</artifactId>
         <version>${version.module}</version>
       </dependency>
       <dependency>
-        <groupId>com.bytechaocai.wallet</groupId>
+        <groupId>com.bytechaocai.fastjava</groupId>
         <artifactId>service</artifactId>
         <version>${version.module}</version>
       </dependency>
       <dependency>
-        <groupId>com.bytechaocai.wallet</groupId>
+        <groupId>com.bytechaocai.fastjava</groupId>
         <artifactId>web</artifactId>
         <version>${version.module}</version>
       </dependency>
