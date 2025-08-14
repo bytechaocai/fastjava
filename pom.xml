@@ -22,7 +22,7 @@
     <module>schedule</module>
     <module>security</module>
     <module>application</module>
-    <module>template</module>
+    <module>code-generate</module>
   </modules>
 
   <properties>
