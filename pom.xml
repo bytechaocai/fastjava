@@ -8,12 +8,12 @@
     <version>3.5.3</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <groupId>com.bytechaocai.fastjava</groupId>
+  <groupId>com.bytechaocai.fastweb</groupId>
   <artifactId>parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>parent</name>
-  <description>让每一笔支出都有记录。</description>
+  <description>一个基于springboot的web脚手架</description>
   <modules>
     <module>core</module>
     <module>data</module>
@@ -59,32 +59,32 @@
     <dependencies>
       <!--模块依赖 开始-->
       <dependency>
-        <groupId>com.bytechaocai.fastjava</groupId>
+        <groupId>com.bytechaocai.fastweb</groupId>
         <artifactId>core</artifactId>
         <version>${version.module}</version>
       </dependency>
       <dependency>
-        <groupId>com.bytechaocai.fastjava</groupId>
+        <groupId>com.bytechaocai.fastweb</groupId>
         <artifactId>data</artifactId>
         <version>${version.module}</version>
       </dependency>
       <dependency>
-        <groupId>com.bytechaocai.fastjava</groupId>
+        <groupId>com.bytechaocai.fastweb</groupId>
         <artifactId>schedule</artifactId>
         <version>${version.module}</version>
       </dependency>
       <dependency>
-        <groupId>com.bytechaocai.fastjava</groupId>
+        <groupId>com.bytechaocai.fastweb</groupId>
         <artifactId>security</artifactId>
         <version>${version.module}</version>
       </dependency>
       <dependency>
-        <groupId>com.bytechaocai.fastjava</groupId>
+        <groupId>com.bytechaocai.fastweb</groupId>
         <artifactId>service</artifactId>
         <version>${version.module}</version>
       </dependency>
       <dependency>
-        <groupId>com.bytechaocai.fastjava</groupId>
+        <groupId>com.bytechaocai.fastweb</groupId>
         <artifactId>web</artifactId>
         <version>${version.module}</version>
       </dependency>
