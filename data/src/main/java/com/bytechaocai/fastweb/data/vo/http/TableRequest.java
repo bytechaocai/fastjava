@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author bytechaocai
  */
-public class TableRequest<T> implements Serializable {
+public class TableRequest<T extends Serializable> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     /**

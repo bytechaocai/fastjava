@@ -32,5 +32,12 @@
       <artifactId>logback-classic</artifactId>
     </dependency>
     <!--日志 结束-->
+
+    <!--spring-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+
   </dependencies>
 </project>
