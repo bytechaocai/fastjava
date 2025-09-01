@@ -22,6 +22,11 @@
       <groupId>org.apache.velocity</groupId>
       <artifactId>velocity-engine-core</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>com.bytechaocai.fastweb</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

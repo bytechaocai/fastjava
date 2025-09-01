@@ -8,7 +8,7 @@ package com.bytechaocai.fastweb.core.exceptions;
  *
  * @author bytechaocai
  */
-public enum ExceptionCode {
+public enum ExceptionCode implements ExceptionCodeInterface {
     ;
     private final String code;
     private final String message;

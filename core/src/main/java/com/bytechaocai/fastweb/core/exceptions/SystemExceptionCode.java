@@ -9,7 +9,7 @@ package com.bytechaocai.fastweb.core.exceptions;
  *
  * @author bytechaocai
  */
-public enum SystemExceptionCode {
+public enum SystemExceptionCode implements ExceptionCodeInterface {
 
     SUCCESS("0000-0000", "成功"),
     KNOWN_ERROR("0000-0001", "未知错误"),
@@ -19,6 +19,8 @@ public enum SystemExceptionCode {
     INDEX_OUT_OF_BOUNDS("0000-0101", "IndexOutOfBoundsException"),
     NET_TIME_OUT("0000-0102", "网络超时"),
     FILE_NOT_FOUND("0000-0103", "文件或目录不存在"),
+    IO_EXCEPTION("0000-0104", "IO异常"),
+    REFLECT_EXCEPTION("0000-0105", "反射异常"),
 
     // Spring Web相关异常 (200-299)
     HTTP_REQUEST_METHOD_NOT_SUPPORTED("0000-0200", "不支持的http请求方法"),
