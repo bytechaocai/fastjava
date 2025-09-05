@@ -1,7 +1,5 @@
 package com.bytechaocai.fastweb.codegenerate.config;
 
-import java.util.Map;
-
 /**
  * 要生成的表以及生成配置。
  *
@@ -14,6 +12,10 @@ public class CrudConfig {
      * 表名，必填。
      */
     private String tableName;
+    /**
+     * 表别名。
+     */
+    private String tableNameAlias;
     /**
      * 根包包名。
      */
@@ -81,6 +83,14 @@ public class CrudConfig {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public String getTableNameAlias() {
+        return tableNameAlias;
+    }
+
+    public void setTableNameAlias(String tableNameAlias) {
+        this.tableNameAlias = tableNameAlias;
     }
 
     public String getRootPackage() {

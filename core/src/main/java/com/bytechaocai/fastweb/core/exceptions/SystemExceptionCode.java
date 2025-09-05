@@ -41,6 +41,7 @@ public enum SystemExceptionCode implements ExceptionCodeInterface {
     TOO_MANY_RESULTS("0000-0404", "预期有一条数据，实际有一条以上数据"),
     TOO_LITTLE_RESULT("0000-0405", "预期至少一条数据，实际没有数据"),
     DUPLICATE_KEY("0000-0406", "主键冲突"),
+    SQL_EXCEPTION("0000-0407", "SQL异常"),
     ;
 
     private final String code;

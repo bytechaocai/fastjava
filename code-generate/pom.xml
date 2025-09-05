@@ -27,6 +27,12 @@
       <groupId>com.bytechaocai.fastweb</groupId>
       <artifactId>core</artifactId>
     </dependency>
+    <!--根据项目需求，修改合适的版本-->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <optional>true</optional>
+    </dependency>
   </dependencies>
 
 </project>
