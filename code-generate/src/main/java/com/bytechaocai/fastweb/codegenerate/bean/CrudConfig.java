@@ -1,4 +1,4 @@
-package com.bytechaocai.fastweb.codegenerate.config;
+package com.bytechaocai.fastweb.codegenerate.bean;
 
 /**
  * 要生成的表以及生成配置。

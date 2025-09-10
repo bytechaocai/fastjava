@@ -1,4 +1,4 @@
-package com.bytechaocai.fastweb.codegenerate.config;
+package com.bytechaocai.fastweb.codegenerate.bean;
 
 import java.util.List;
 

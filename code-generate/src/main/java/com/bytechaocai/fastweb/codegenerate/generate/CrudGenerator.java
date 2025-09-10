@@ -1,8 +1,8 @@
 package com.bytechaocai.fastweb.codegenerate.generate;
 
-import com.bytechaocai.fastweb.codegenerate.config.ColumnInfo;
-import com.bytechaocai.fastweb.codegenerate.config.CrudConfig;
-import com.bytechaocai.fastweb.codegenerate.config.CrudTableConfig;
+import com.bytechaocai.fastweb.codegenerate.bean.ColumnInfo;
+import com.bytechaocai.fastweb.codegenerate.bean.CrudConfig;
+import com.bytechaocai.fastweb.codegenerate.bean.CrudTableConfig;
 import com.bytechaocai.fastweb.core.exceptions.SystemException;
 import com.bytechaocai.fastweb.core.exceptions.SystemExceptionCode;
 import com.bytechaocai.fastweb.core.util.PropertiesUtil;
