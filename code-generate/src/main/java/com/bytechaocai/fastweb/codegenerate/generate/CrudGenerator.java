@@ -1,15 +1,21 @@
 package com.bytechaocai.fastweb.codegenerate.generate;
 
+import com.bytechaocai.fastweb.codegenerate.config.ColumnInfo;
 import com.bytechaocai.fastweb.codegenerate.config.CrudConfig;
 import com.bytechaocai.fastweb.codegenerate.config.CrudTableConfig;
 import com.bytechaocai.fastweb.core.exceptions.SystemException;
 import com.bytechaocai.fastweb.core.exceptions.SystemExceptionCode;
 import com.bytechaocai.fastweb.core.util.PropertiesUtil;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.context.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
 import java.beans.PropertyDescriptor;
+import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -30,6 +36,14 @@ import java.util.Properties;
  */
 public class CrudGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(CrudGenerator.class);
+    /**
+     * Java类型。
+     */
+    private static final Map<String, String> JAVA_TYPE_MAP = new HashMap<>();
+    /**
+     * jdbc类型。
+     */
+    private static final Map<String, String> JDBC_TYPE_MAP = new HashMap<>();
     private CrudConfig crudConfig;
     private CrudTableConfig crudTableConfig;
     /**
@@ -81,18 +95,21 @@ public class CrudGenerator {
     public void loadTableConfig(Connection connection) {
         try {
             LOGGER.info("读取表信息");
-            List<Map<String, Object>> list = new ArrayList<>();
+            List<ColumnInfo> list = new ArrayList<>();
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet resultSet = metaData.getColumns(null, null, crudConfig.getTableName(), null);
             while (resultSet.next()) {
-                Map<String, Object> columnMap = new HashMap<>();
-                columnMap.put("columnName", resultSet.getString("COLUMN_NAME"));
-                columnMap.put("dataType", resultSet.getInt("DATA_TYPE"));
-                columnMap.put("typeName", resultSet.getString("TYPE_NAME"));
-                columnMap.put("columnSize", resultSet.getInt("COLUMN_SIZE"));
-                columnMap.put("nullable", resultSet.getInt("NULLABLE") == DatabaseMetaData.columnNullable);
-                columnMap.put("remarks", resultSet.getString("REMARKS"));
-                list.add(columnMap);
+                ColumnInfo columnInfo = new ColumnInfo();
+                // todo 使用bean。
+                columnInfo.setColumnName(resultSet.getString("COLUMN_NAME"));
+                // java.sql.types中的类型
+                columnInfo.setDataType(resultSet.getString("DATA_TYPE"));
+                // 数据库自己的类型
+                columnInfo.setColumnType(resultSet.getString("TYPE_NAME"));
+                columnInfo.setColumnLength(resultSet.getString("COLUMN_SIZE"));
+                columnInfo.setNullable(resultSet.getInt("NULLABLE") == DatabaseMetaData.columnNullable);
+                columnInfo.setComment(resultSet.getString("REMARKS"));
+                list.add(columnInfo);
             }
             crudTableConfig = new CrudTableConfig();
             crudTableConfig.setColumnList(list);
@@ -102,7 +119,18 @@ public class CrudGenerator {
         }
     }
 
-    public void generate() {
-
+    public void generate() throws Exception {
+        Properties properties = PropertiesUtil.load("classpath:velocity.properties");
+        // velocity会判断是否已经初始化
+        Velocity.init(properties);
+        Context context = new VelocityContext();
+        context.put("crudConfig", crudConfig);
+        context.put("tableConfig", crudTableConfig);
+        Template template = Velocity.getTemplate("crud/entity.vm", "UTF-8");
+        FileWriter fileWriter = new FileWriter(
+                "code-generate/src/main/java/com/bytechaocai/fastweb/codegenerate/" + crudConfig.getTableName() + ".java");
+        template.merge(context, fileWriter);
+        fileWriter.flush();
+        fileWriter.close();
     }
 }

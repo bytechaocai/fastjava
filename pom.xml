@@ -36,6 +36,7 @@
     <version.mybatis>3.0.4</version.mybatis>
     <version.junit5>5.12.2</version.junit5>
     <version.velocity>2.4.1</version.velocity>
+    <version.velocity-tools>2.0</version.velocity-tools>
     <version.spring-boot>3.5.3</version.spring-boot>
     <version.spring-boot-session>3.5.1</version.spring-boot-session>
     <version.spring-boot-security-test>6.5.1</version.spring-boot-security-test>
@@ -193,7 +194,13 @@
       <dependency>
         <groupId>org.apache.velocity</groupId>
         <artifactId>velocity-tools</artifactId>
-        <version>2.0</version>
+        <version>${version.velocity-tools}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <!-- velocity引擎 结束-->
 

@@ -1,7 +1,6 @@
 package com.bytechaocai.fastweb.codegenerate.config;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 表配置，解析和生成配置一起传入模板。
@@ -20,7 +19,7 @@ public class CrudTableConfig {
     /**
      * 表里的列。
      */
-    private List<Map<String, Object>> columnList;
+    private List<ColumnInfo> columnList;
 
     public String getSchemaName() {
         return schemaName;
@@ -38,11 +37,11 @@ public class CrudTableConfig {
         this.tableName = tableName;
     }
 
-    public List<Map<String, Object>> getColumnList() {
+    public List<ColumnInfo> getColumnList() {
         return columnList;
     }
 
-    public void setColumnList(List<Map<String, Object>> columnList) {
+    public void setColumnList(List<ColumnInfo> columnList) {
         this.columnList = columnList;
     }
 }

@@ -13,6 +13,14 @@ public class CrudConfig {
      */
     private String tableName;
     /**
+     * 实体名，由表名计算。
+     */
+    private String entityName;
+    /**
+     * 作者，默认是主机名。
+     */
+    private String author;
+    /**
      * 表别名。
      */
     private String tableNameAlias;
@@ -83,6 +91,14 @@ public class CrudConfig {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public void setEntityName(String entityName) {
+        this.entityName = entityName;
     }
 
     public String getTableNameAlias() {
