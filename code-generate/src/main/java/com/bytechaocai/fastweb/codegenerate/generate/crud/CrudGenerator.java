@@ -3,6 +3,7 @@ package com.bytechaocai.fastweb.codegenerate.generate.crud;
 import com.bytechaocai.fastweb.codegenerate.bean.crud.ColumnInfo;
 import com.bytechaocai.fastweb.codegenerate.bean.crud.CrudConfig;
 import com.bytechaocai.fastweb.codegenerate.bean.crud.CrudTableConfig;
+import com.bytechaocai.fastweb.codegenerate.exceptions.CrudExceptionCode;
 import com.bytechaocai.fastweb.core.exceptions.SystemException;
 import com.bytechaocai.fastweb.core.exceptions.SystemExceptionCode;
 import com.bytechaocai.fastweb.core.util.PropertiesUtil;
@@ -17,6 +18,9 @@ import org.springframework.beans.BeanUtils;
 
 import java.beans.PropertyDescriptor;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -140,6 +144,9 @@ public class CrudGenerator {
         JDBC_TYPE_MAP.put(Types.TIME_WITH_TIMEZONE, "TIME_WITH_TIMEZONE");
         JDBC_TYPE_MAP.put(Types.TIMESTAMP_WITH_TIMEZONE, "TIMESTAMP_WITH_TIMEZONE");
 
+        Properties properties = PropertiesUtil.load("classpath:velocity.properties");
+        // velocity会判断是否已经初始化
+        Velocity.init(properties);
     }
 
     private CrudConfig crudConfig;
@@ -191,23 +198,31 @@ public class CrudGenerator {
      * @param connection 数据库连接。
      */
     public void loadTableConfig(Connection connection) {
-        // todo autoclose
+        String primaryKey = null;
+        LOGGER.info("加载表信息");
+        List<ColumnInfo> list = new ArrayList<>();
+        DatabaseMetaData metaData = null;
         try {
-            LOGGER.info("加载表信息");
-            List<ColumnInfo> list = new ArrayList<>();
-            DatabaseMetaData metaData = connection.getMetaData();
-            // 先获取主键，在遍历列时直接比较，如果在遍历完列后比较，要多一次循环
-            // 暂不支持多字段主键
-            LOGGER.info("加载主键");
-            ResultSet primaryKeyRs = metaData.getPrimaryKeys(null, null, crudConfig.getTableName());
-            String primaryKey = null;
+            metaData = connection.getMetaData();
+        } catch (SQLException e) {
+            throw new SystemException(CrudExceptionCode.LOAD_META_ERROR, e);
+        }
+        // 先获取主键，在遍历列时直接比较，如果在遍历完列后比较，要多一次循环
+        // 暂不支持多字段主键
+        LOGGER.info("加载主键");
+        try (ResultSet primaryKeyRs = metaData.getPrimaryKeys(null, null, crudConfig.getTableName())) {
             if (primaryKeyRs.next()) {
                 primaryKey = primaryKeyRs.getString("COLUMN_NAME");
+                LOGGER.info("主键是[{}]", primaryKey);
             }
-            ResultSet columnRs = metaData.getColumns(null, null, crudConfig.getTableName(), null);
+        } catch (SQLException e) {
+            throw new SystemException(CrudExceptionCode.LOAD_PRIMARY_ERROR, e);
+        }
+
+        try (ResultSet columnRs = metaData.getColumns(null, null, crudConfig.getTableName(), null)) {
+
             while (columnRs.next()) {
                 ColumnInfo columnInfo = new ColumnInfo();
-                // todo 使用bean。
                 columnInfo.setColumnName(columnRs.getString("COLUMN_NAME"));
                 // java.sql.types中的类型
                 columnInfo.setDataType(columnRs.getInt("DATA_TYPE"));
@@ -220,16 +235,20 @@ public class CrudGenerator {
                 }
                 list.add(columnInfo);
             }
-            ResultSet tableRs = metaData.getTables(null, null, crudConfig.getTableName(), null);
+            crudTableConfig.setColumnList(list);
+        } catch (SQLException e) {
+            throw new SystemException(CrudExceptionCode.LOAD_COLUMN_ERROR, e);
+        }
+
+        try (ResultSet tableRs = metaData.getTables(null, null, crudConfig.getTableName(), null)) {
             tableRs.next();
             crudTableConfig = new CrudTableConfig();
             crudTableConfig.setTableName(tableRs.getString("TABLE_NAME"));
             crudTableConfig.setTableComment(tableRs.getString("REMARKS"));
-            crudTableConfig.setColumnList(list);
-            LOGGER.info("表{}加载完成，一共{}个字段", crudConfig.getTableName(), list.size());
         } catch (SQLException e) {
-            throw new SystemException(SystemExceptionCode.SQL_EXCEPTION, e);
+            throw new SystemException(CrudExceptionCode.LOAD_TABLE_ERROR, e);
         }
+        LOGGER.info("表{}加载完成，一共{}个字段", crudConfig.getTableName(), list.size());
     }
 
     /**
@@ -254,21 +273,28 @@ public class CrudGenerator {
         crudTableConfig.getPackageList().addAll(set);
     }
 
-    public void generate() throws Exception {
-        Properties properties = PropertiesUtil.load("classpath:velocity.properties");
-        // velocity会判断是否已经初始化
-        Velocity.init(properties);
+    /**
+     * 生成实体类。
+     */
+    public void generate() {
         Context context = new VelocityContext();
         context.put("crudConfig", crudConfig);
         context.put("tableConfig", crudTableConfig);
         context.put("columnList", crudTableConfig.getColumnList());
         Template template = Velocity.getTemplate("crud/entity.vm", "UTF-8");
-        // todo 创建嵌套目录
         String path = String.format("%s/src/main/java/%s/", crudConfig.getModuleName(),
                 crudConfig.getEntityPackage().replace(".", "/"));
-        FileWriter fileWriter = new FileWriter(path + crudConfig.getEntityName() + ".java");
-        template.merge(context, fileWriter);
-        fileWriter.flush();
-        fileWriter.close();
+        try {
+            Files.createDirectories(Paths.get(path));
+        } catch (IOException e) {
+            throw new SystemException(SystemExceptionCode.IO_EXCEPTION, e);
+        }
+
+        try (FileWriter fileWriter = new FileWriter(path + crudConfig.getEntityName() + ".java")) {
+            template.merge(context, fileWriter);
+            fileWriter.flush();
+        } catch (IOException e) {
+            throw new SystemException(SystemExceptionCode.IO_EXCEPTION, e);
+        }
     }
 }
