@@ -51,7 +51,7 @@ public class CrudGenerator {
     /**
      * jdbc类型。
      */
-    private static final Map<String, String> JDBC_TYPE_MAP = new HashMap<>();
+    private static final Map<Integer, String> JDBC_TYPE_MAP = new HashMap<>();
 
     static {
         JAVA_TYPE_MAP.put(Types.BIT, "Byte");
@@ -67,9 +67,9 @@ public class CrudGenerator {
         JAVA_TYPE_MAP.put(Types.CHAR, "String");
         JAVA_TYPE_MAP.put(Types.VARCHAR, "String");
         JAVA_TYPE_MAP.put(Types.LONGVARCHAR, "String");
-        JAVA_TYPE_MAP.put(Types.DATE, "Date");
-        JAVA_TYPE_MAP.put(Types.TIME, "Date");
-        JAVA_TYPE_MAP.put(Types.TIMESTAMP, "Date");
+        JAVA_TYPE_MAP.put(Types.DATE, "LocalDate");
+        JAVA_TYPE_MAP.put(Types.TIME, "LocalTime");
+        JAVA_TYPE_MAP.put(Types.TIMESTAMP, "LocalDateTime");
         // JAVA_TYPE_MAP.put(Types.BINARY, "BINARY");
         // JAVA_TYPE_MAP.put(Types.VARBINARY, "VARBINARY");
         // JAVA_TYPE_MAP.put(Types.LONGVARBINARY, "LONGVARBINARY");
@@ -95,8 +95,51 @@ public class CrudGenerator {
         // JAVA_TYPE_MAP.put(Types.TIMESTAMP_WITH_TIMEZONE, "TIMESTAMP_WITH_TIMEZONE");
 
 
-        JAVA_TYPE_IMPORT.put("Date", "import java.util.Date;");
+        JAVA_TYPE_IMPORT.put("LocalDate", "import java.time.LocalDate;");
+        JAVA_TYPE_IMPORT.put("LocalTime", "import java.time.LocalTime;");
+        JAVA_TYPE_IMPORT.put("LocalDateTime", "import java.time.LocalDateTime;");
         JAVA_TYPE_IMPORT.put("BigDecimal", "import java.math.BigDecimal;");
+
+        JDBC_TYPE_MAP.put(Types.BIT, "BIT");
+        JDBC_TYPE_MAP.put(Types.TINYINT, "TINYINT");
+        JDBC_TYPE_MAP.put(Types.SMALLINT, "SMALLINT");
+        JDBC_TYPE_MAP.put(Types.INTEGER, "INTEGER");
+        JDBC_TYPE_MAP.put(Types.BIGINT, "BIGINT");
+        JDBC_TYPE_MAP.put(Types.FLOAT, "FLOAT");
+        JDBC_TYPE_MAP.put(Types.REAL, "REAL");
+        JDBC_TYPE_MAP.put(Types.DOUBLE, "DOUBLE");
+        JDBC_TYPE_MAP.put(Types.NUMERIC, "NUMERIC");
+        JDBC_TYPE_MAP.put(Types.DECIMAL, "DECIMAL");
+        JDBC_TYPE_MAP.put(Types.CHAR, "CHAR");
+        JDBC_TYPE_MAP.put(Types.VARCHAR, "VARCHAR");
+        JDBC_TYPE_MAP.put(Types.LONGVARCHAR, "LONGVARCHAR");
+        JDBC_TYPE_MAP.put(Types.DATE, "DATE");
+        JDBC_TYPE_MAP.put(Types.TIME, "TIME");
+        JDBC_TYPE_MAP.put(Types.TIMESTAMP, "TIMESTAMP");
+        JDBC_TYPE_MAP.put(Types.BINARY, "BINARY");
+        JDBC_TYPE_MAP.put(Types.VARBINARY, "VARBINARY");
+        JDBC_TYPE_MAP.put(Types.LONGVARBINARY, "LONGVARBINARY");
+        JDBC_TYPE_MAP.put(Types.NULL, "NULL");
+        JDBC_TYPE_MAP.put(Types.OTHER, "OTHER");
+        JDBC_TYPE_MAP.put(Types.JAVA_OBJECT, "JAVA_OBJECT");
+        JDBC_TYPE_MAP.put(Types.DISTINCT, "DISTINCT");
+        JDBC_TYPE_MAP.put(Types.STRUCT, "STRUCT");
+        JDBC_TYPE_MAP.put(Types.ARRAY, "ARRAY");
+        JDBC_TYPE_MAP.put(Types.BLOB, "BLOB");
+        JDBC_TYPE_MAP.put(Types.CLOB, "CLOB");
+        JDBC_TYPE_MAP.put(Types.REF, "REF");
+        JDBC_TYPE_MAP.put(Types.DATALINK, "DATALINK");
+        JDBC_TYPE_MAP.put(Types.BOOLEAN, "BOOLEAN");
+        JDBC_TYPE_MAP.put(Types.ROWID, "ROWID");
+        JDBC_TYPE_MAP.put(Types.NCHAR, "NCHAR");
+        JDBC_TYPE_MAP.put(Types.NVARCHAR, "NVARCHAR");
+        JDBC_TYPE_MAP.put(Types.LONGNVARCHAR, "LONGNVARCHAR");
+        JDBC_TYPE_MAP.put(Types.NCLOB, "NCLOB");
+        JDBC_TYPE_MAP.put(Types.SQLXML, "SQLXML");
+        JDBC_TYPE_MAP.put(Types.REF_CURSOR, "REF_CURSOR");
+        JDBC_TYPE_MAP.put(Types.TIME_WITH_TIMEZONE, "TIME_WITH_TIMEZONE");
+        JDBC_TYPE_MAP.put(Types.TIMESTAMP_WITH_TIMEZONE, "TIMESTAMP_WITH_TIMEZONE");
+
     }
 
     private CrudConfig crudConfig;
@@ -148,29 +191,40 @@ public class CrudGenerator {
      * @param connection 数据库连接。
      */
     public void loadTableConfig(Connection connection) {
+        // todo autoclose
         try {
-            LOGGER.info("读取表信息");
+            LOGGER.info("加载表信息");
             List<ColumnInfo> list = new ArrayList<>();
             DatabaseMetaData metaData = connection.getMetaData();
-            ResultSet resultSet = metaData.getColumns(null, null, crudConfig.getTableName(), null);
-            while (resultSet.next()) {
+            // 先获取主键，在遍历列时直接比较，如果在遍历完列后比较，要多一次循环
+            // 暂不支持多字段主键
+            LOGGER.info("加载主键");
+            ResultSet primaryKeyRs = metaData.getPrimaryKeys(null, null, crudConfig.getTableName());
+            String primaryKey = null;
+            if (primaryKeyRs.next()) {
+                primaryKey = primaryKeyRs.getString("COLUMN_NAME");
+            }
+            ResultSet columnRs = metaData.getColumns(null, null, crudConfig.getTableName(), null);
+            while (columnRs.next()) {
                 ColumnInfo columnInfo = new ColumnInfo();
                 // todo 使用bean。
-                columnInfo.setColumnName(resultSet.getString("COLUMN_NAME"));
+                columnInfo.setColumnName(columnRs.getString("COLUMN_NAME"));
                 // java.sql.types中的类型
-                columnInfo.setDataType(resultSet.getInt("DATA_TYPE"));
-                // 数据库自己的类型
-                columnInfo.setColumnType(resultSet.getString("TYPE_NAME"));
-                columnInfo.setColumnLength(resultSet.getString("COLUMN_SIZE"));
-                columnInfo.setNullable(resultSet.getInt("NULLABLE") == DatabaseMetaData.columnNullable);
-                columnInfo.setComment(resultSet.getString("REMARKS"));
+                columnInfo.setDataType(columnRs.getInt("DATA_TYPE"));
+                columnInfo.setJdbcType(JDBC_TYPE_MAP.get(columnInfo.getDataType()));
+                columnInfo.setColumnLength(columnRs.getString("COLUMN_SIZE"));
+                columnInfo.setNullable(columnRs.getInt("NULLABLE") == DatabaseMetaData.columnNullable);
+                columnInfo.setComment(columnRs.getString("REMARKS"));
+                if (columnInfo.getColumnName().equals(primaryKey)) {
+                    columnInfo.setPrimaryKey(true);
+                }
                 list.add(columnInfo);
             }
-            ResultSet tables = metaData.getTables(null, null, crudConfig.getTableName(), null);
-            tables.next();
+            ResultSet tableRs = metaData.getTables(null, null, crudConfig.getTableName(), null);
+            tableRs.next();
             crudTableConfig = new CrudTableConfig();
-            crudTableConfig.setTableName(tables.getString("TABLE_NAME"));
-            crudTableConfig.setTableComment(tables.getString("REMARKS"));
+            crudTableConfig.setTableName(tableRs.getString("TABLE_NAME"));
+            crudTableConfig.setTableComment(tableRs.getString("REMARKS"));
             crudTableConfig.setColumnList(list);
             LOGGER.info("表{}加载完成，一共{}个字段", crudConfig.getTableName(), list.size());
         } catch (SQLException e) {
@@ -191,13 +245,10 @@ public class CrudGenerator {
             columnInfo.setFieldName(StrUtil.underlineToLowerCamel(columnName));
             columnInfo.setUpperCamelFieldName(StrUtil.underlineToUpperCamel(columnName));
             columnInfo.setJavaType(JAVA_TYPE_MAP.get(columnInfo.getDataType()));
-            if ("BigDecimal".equals(columnInfo.getJavaType())) {
-                set.add("import java.math.BigDecimal;");
+            if (JAVA_TYPE_IMPORT.containsKey(columnInfo.getJavaType())) {
+                set.add(JAVA_TYPE_IMPORT.get(columnInfo.getJavaType()));
             }
-            if ("Date".equals(columnInfo.getJavaType())) {
-                set.add("import java.util.Date;");
-            }
-            columnInfo.setColumnType(JDBC_TYPE_MAP.get(columnInfo.getColumnType()));
+            columnInfo.setJdbcType(JDBC_TYPE_MAP.get(columnInfo.getDataType()));
             columnInfo.setComment(columnInfo.getComment() + "。");
         }
         crudTableConfig.getPackageList().addAll(set);

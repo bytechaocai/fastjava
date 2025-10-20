@@ -7,6 +7,10 @@ package com.bytechaocai.fastweb.codegenerate.bean.crud;
  */
 public class ColumnInfo {
     /**
+     * 是否是主键。
+     */
+    private boolean isPrimaryKey;
+    /**
      * 字段名。
      */
     private String columnName;
@@ -19,9 +23,9 @@ public class ColumnInfo {
      */
     private String upperCamelFieldName;
     /**
-     * 数据库ddl中的类型。
+     * mybatis sql中的类型，#{property,jdbcType=TYPE}。
      */
-    private String columnType;
+    private String jdbcType;
     /**
      * 长度。
      */
@@ -42,6 +46,14 @@ public class ColumnInfo {
      * java类型，也是实体类属性的类型。
      */
     private String javaType;
+
+    public boolean isPrimaryKey() {
+        return isPrimaryKey;
+    }
+
+    public void setPrimaryKey(boolean primaryKey) {
+        isPrimaryKey = primaryKey;
+    }
 
     public String getColumnName() {
         return columnName;
@@ -67,12 +79,12 @@ public class ColumnInfo {
         this.upperCamelFieldName = upperCamelFieldName;
     }
 
-    public String getColumnType() {
-        return columnType;
+    public String getJdbcType() {
+        return jdbcType;
     }
 
-    public void setColumnType(String columnType) {
-        this.columnType = columnType;
+    public void setJdbcType(String jdbcType) {
+        this.jdbcType = jdbcType;
     }
 
     public String getColumnLength() {

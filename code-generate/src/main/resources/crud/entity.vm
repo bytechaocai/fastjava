@@ -2,6 +2,7 @@ package $crudConfig.entityPackage;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -22,7 +23,11 @@ public class ${crudConfig.entityName} implements Serializable {
     /**
      * ${item.comment}
      */
+    #if ($item.isPrimaryKey)
+    @Id
+    #else
     @Column(name = "${item.columnName}"#if (!$item.isNullable), nullable = false #end)
+    #end
     private ${item.javaType} ${item.fieldName};
     #end
 
