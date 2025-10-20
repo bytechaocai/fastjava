@@ -1,5 +1,6 @@
 package com.bytechaocai.fastweb.codegenerate.bean.crud;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +18,17 @@ public class CrudTableConfig {
      */
     private String tableName;
     /**
+     * 表名注释。
+     */
+    private String tableComment;
+    /**
      * 表里的列。
      */
     private List<ColumnInfo> columnList;
+    /**
+     * 导包列表。
+     */
+    private List<String> packageList = new ArrayList<>();
 
     public String getSchemaName() {
         return schemaName;
@@ -37,11 +46,27 @@ public class CrudTableConfig {
         this.tableName = tableName;
     }
 
+    public String getTableComment() {
+        return tableComment;
+    }
+
+    public void setTableComment(String tableComment) {
+        this.tableComment = tableComment;
+    }
+
     public List<ColumnInfo> getColumnList() {
         return columnList;
     }
 
     public void setColumnList(List<ColumnInfo> columnList) {
         this.columnList = columnList;
+    }
+
+    public List<String> getPackageList() {
+        return packageList;
+    }
+
+    public void setPackageList(List<String> packageList) {
+        this.packageList = packageList;
     }
 }

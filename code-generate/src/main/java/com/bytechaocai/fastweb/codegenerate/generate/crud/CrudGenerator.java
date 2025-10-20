@@ -6,6 +6,7 @@ import com.bytechaocai.fastweb.codegenerate.bean.crud.CrudTableConfig;
 import com.bytechaocai.fastweb.core.exceptions.SystemException;
 import com.bytechaocai.fastweb.core.exceptions.SystemExceptionCode;
 import com.bytechaocai.fastweb.core.util.PropertiesUtil;
+import com.bytechaocai.fastweb.core.util.StrUtil;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -20,11 +21,14 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * 代码生成器。
@@ -39,11 +43,62 @@ public class CrudGenerator {
     /**
      * Java类型。
      */
-    private static final Map<String, String> JAVA_TYPE_MAP = new HashMap<>();
+    private static final Map<Integer, String> JAVA_TYPE_MAP = new HashMap<>();
+    /**
+     * 导包。
+     */
+    private static final Map<String, String> JAVA_TYPE_IMPORT = new HashMap<>();
     /**
      * jdbc类型。
      */
     private static final Map<String, String> JDBC_TYPE_MAP = new HashMap<>();
+
+    static {
+        JAVA_TYPE_MAP.put(Types.BIT, "Byte");
+        JAVA_TYPE_MAP.put(Types.TINYINT, "Short");
+        JAVA_TYPE_MAP.put(Types.SMALLINT, "Short");
+        JAVA_TYPE_MAP.put(Types.INTEGER, "Short");
+        JAVA_TYPE_MAP.put(Types.BIGINT, "BigDecimal");
+        JAVA_TYPE_MAP.put(Types.FLOAT, "Float");
+        // JAVA_TYPE_MAP.put(Types.REAL, "REAL");
+        JAVA_TYPE_MAP.put(Types.DOUBLE, "Double");
+        JAVA_TYPE_MAP.put(Types.NUMERIC, "BigDecimal");
+        JAVA_TYPE_MAP.put(Types.DECIMAL, "BigDecimal");
+        JAVA_TYPE_MAP.put(Types.CHAR, "String");
+        JAVA_TYPE_MAP.put(Types.VARCHAR, "String");
+        JAVA_TYPE_MAP.put(Types.LONGVARCHAR, "String");
+        JAVA_TYPE_MAP.put(Types.DATE, "Date");
+        JAVA_TYPE_MAP.put(Types.TIME, "Date");
+        JAVA_TYPE_MAP.put(Types.TIMESTAMP, "Date");
+        // JAVA_TYPE_MAP.put(Types.BINARY, "BINARY");
+        // JAVA_TYPE_MAP.put(Types.VARBINARY, "VARBINARY");
+        // JAVA_TYPE_MAP.put(Types.LONGVARBINARY, "LONGVARBINARY");
+        // JAVA_TYPE_MAP.put(Types.NULL, "NULL");
+        // JAVA_TYPE_MAP.put(Types.OTHER, "OTHER");
+        // JAVA_TYPE_MAP.put(Types.JAVA_OBJECT, "JAVA_OBJECT");
+        // JAVA_TYPE_MAP.put(Types.DISTINCT, "DISTINCT");
+        // JAVA_TYPE_MAP.put(Types.STRUCT, "STRUCT");
+        // JAVA_TYPE_MAP.put(Types.ARRAY, "ARRAY");
+        // JAVA_TYPE_MAP.put(Types.BLOB, "BLOB");
+        // JAVA_TYPE_MAP.put(Types.CLOB, "CLOB");
+        // JAVA_TYPE_MAP.put(Types.REF, "REF");
+        // JAVA_TYPE_MAP.put(Types.DATALINK, "DATALINK");
+        JAVA_TYPE_MAP.put(Types.BOOLEAN, "Boolean");
+        // JAVA_TYPE_MAP.put(Types.ROWID, "ROWID");
+        // JAVA_TYPE_MAP.put(Types.NCHAR, "String");
+        // JAVA_TYPE_MAP.put(Types.NVARCHAR, "NVARCHAR");
+        // JAVA_TYPE_MAP.put(Types.LONGNVARCHAR, "LONGNVARCHAR");
+        // JAVA_TYPE_MAP.put(Types.NCLOB, "NCLOB");
+        // JAVA_TYPE_MAP.put(Types.SQLXML, "SQLXML");
+        // JAVA_TYPE_MAP.put(Types.REF_CURSOR, "REF_CURSOR");
+        // JAVA_TYPE_MAP.put(Types.TIME_WITH_TIMEZONE, "TIME_WITH_TIMEZONE");
+        // JAVA_TYPE_MAP.put(Types.TIMESTAMP_WITH_TIMEZONE, "TIMESTAMP_WITH_TIMEZONE");
+
+
+        JAVA_TYPE_IMPORT.put("Date", "import java.util.Date;");
+        JAVA_TYPE_IMPORT.put("BigDecimal", "import java.math.BigDecimal;");
+    }
+
     private CrudConfig crudConfig;
     private CrudTableConfig crudTableConfig;
     /**
@@ -103,7 +158,7 @@ public class CrudGenerator {
                 // todo 使用bean。
                 columnInfo.setColumnName(resultSet.getString("COLUMN_NAME"));
                 // java.sql.types中的类型
-                columnInfo.setDataType(resultSet.getString("DATA_TYPE"));
+                columnInfo.setDataType(resultSet.getInt("DATA_TYPE"));
                 // 数据库自己的类型
                 columnInfo.setColumnType(resultSet.getString("TYPE_NAME"));
                 columnInfo.setColumnLength(resultSet.getString("COLUMN_SIZE"));
@@ -111,12 +166,41 @@ public class CrudGenerator {
                 columnInfo.setComment(resultSet.getString("REMARKS"));
                 list.add(columnInfo);
             }
+            ResultSet tables = metaData.getTables(null, null, crudConfig.getTableName(), null);
+            tables.next();
             crudTableConfig = new CrudTableConfig();
+            crudTableConfig.setTableName(tables.getString("TABLE_NAME"));
+            crudTableConfig.setTableComment(tables.getString("REMARKS"));
             crudTableConfig.setColumnList(list);
             LOGGER.info("表{}加载完成，一共{}个字段", crudConfig.getTableName(), list.size());
         } catch (SQLException e) {
             throw new SystemException(SystemExceptionCode.SQL_EXCEPTION, e);
         }
+    }
+
+    /**
+     * 生成前准备工作。
+     */
+    public void prepare() {
+        crudConfig.setEntityName(
+                StrUtil.underlineToUpperCamel(crudConfig.getTableName()) + crudConfig.getEntitySuffix());
+        crudConfig.setAuthor(System.getProperty("user.name"));
+        Set<String> set = new HashSet<>();
+        for (ColumnInfo columnInfo : crudTableConfig.getColumnList()) {
+            String columnName = columnInfo.getColumnName();
+            columnInfo.setFieldName(StrUtil.underlineToLowerCamel(columnName));
+            columnInfo.setUpperCamelFieldName(StrUtil.underlineToUpperCamel(columnName));
+            columnInfo.setJavaType(JAVA_TYPE_MAP.get(columnInfo.getDataType()));
+            if ("BigDecimal".equals(columnInfo.getJavaType())) {
+                set.add("import java.math.BigDecimal;");
+            }
+            if ("Date".equals(columnInfo.getJavaType())) {
+                set.add("import java.util.Date;");
+            }
+            columnInfo.setColumnType(JDBC_TYPE_MAP.get(columnInfo.getColumnType()));
+            columnInfo.setComment(columnInfo.getComment() + "。");
+        }
+        crudTableConfig.getPackageList().addAll(set);
     }
 
     public void generate() throws Exception {
@@ -126,9 +210,12 @@ public class CrudGenerator {
         Context context = new VelocityContext();
         context.put("crudConfig", crudConfig);
         context.put("tableConfig", crudTableConfig);
+        context.put("columnList", crudTableConfig.getColumnList());
         Template template = Velocity.getTemplate("crud/entity.vm", "UTF-8");
-        FileWriter fileWriter = new FileWriter(
-                "code-generate/src/main/java/com/bytechaocai/fastweb/codegenerate/" + crudConfig.getTableName() + ".java");
+        // todo 创建嵌套目录
+        String path = String.format("%s/src/main/java/%s/", crudConfig.getModuleName(),
+                crudConfig.getEntityPackage().replace(".", "/"));
+        FileWriter fileWriter = new FileWriter(path + crudConfig.getEntityName() + ".java");
         template.merge(context, fileWriter);
         fileWriter.flush();
         fileWriter.close();

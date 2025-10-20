@@ -15,6 +15,10 @@ public class ColumnInfo {
      */
     private String fieldName;
     /**
+     * 大驼峰字段名。
+     */
+    private String upperCamelFieldName;
+    /**
      * 数据库ddl中的类型。
      */
     private String columnType;
@@ -33,7 +37,7 @@ public class ColumnInfo {
     /**
      * java.sql.types中的类型。
      */
-    private String dataType;
+    private int dataType;
     /**
      * java类型，也是实体类属性的类型。
      */
@@ -53,6 +57,14 @@ public class ColumnInfo {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
+    }
+
+    public String getUpperCamelFieldName() {
+        return upperCamelFieldName;
+    }
+
+    public void setUpperCamelFieldName(String upperCamelFieldName) {
+        this.upperCamelFieldName = upperCamelFieldName;
     }
 
     public String getColumnType() {
@@ -87,11 +99,11 @@ public class ColumnInfo {
         this.comment = comment;
     }
 
-    public String getDataType() {
+    public int getDataType() {
         return dataType;
     }
 
-    public void setDataType(String dataType) {
+    public void setDataType(int dataType) {
         this.dataType = dataType;
     }
 

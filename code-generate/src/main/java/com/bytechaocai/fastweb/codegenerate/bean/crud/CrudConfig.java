@@ -17,6 +17,10 @@ public class CrudConfig {
      */
     private String entityName;
     /**
+     * 模块名。
+     */
+    private String moduleName;
+    /**
      * 作者，默认是主机名。
      */
     private String author;
@@ -99,6 +103,22 @@ public class CrudConfig {
 
     public void setEntityName(String entityName) {
         this.entityName = entityName;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getTableNameAlias() {
