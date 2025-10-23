@@ -6,20 +6,20 @@ import jakarta.persistence.Id;
 
 import java.io.Serial;
 import java.io.Serializable;
-#foreach ($item in $tableConfig.packageList)
+#foreach ($item in $crudConfig.packageList)
 ${item}
 #end
 
 /**
- * ${tableConfig.tableComment}。
+ * ${crudConfig.tableComment} 实体类。
  *
  * @author ${crudConfig.author}
  */
-@Entity(name = "${tableConfig.tableName}")
+@Entity(name = "${crudConfig.tableName}")
 public class ${crudConfig.entityName} implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    #foreach ($item in $tableConfig.columnList)
+    #foreach ($item in $crudConfig.columnList)
     /**
      * ${item.comment}
      */
@@ -31,7 +31,7 @@ public class ${crudConfig.entityName} implements Serializable {
     private ${item.javaType} ${item.fieldName};
     #end
 
-    #foreach ($item in $tableConfig.columnList)
+    #foreach ($item in $crudConfig.columnList)
     public ${item.javaType} get${item.upperCamelFieldName}() {
         return this.${item.fieldName};
     }

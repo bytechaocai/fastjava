@@ -1,5 +1,8 @@
 package com.bytechaocai.fastweb.codegenerate.bean.crud;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 要生成的表以及生成配置。
  *
@@ -88,6 +91,18 @@ public class CrudConfig {
      * 是否生成service测试类。
      */
     private boolean enableServiceTest;
+    /**
+     * 表名注释。
+     */
+    private String tableComment;
+    /**
+     * 表里的列。
+     */
+    private List<ColumnInfo> columnList;
+    /**
+     * 导包列表。
+     */
+    private List<String> packageList = new ArrayList<>();
 
     public String getTableName() {
         return tableName;
@@ -247,5 +262,29 @@ public class CrudConfig {
 
     public void setEnableServiceTest(boolean enableServiceTest) {
         this.enableServiceTest = enableServiceTest;
+    }
+
+    public String getTableComment() {
+        return tableComment;
+    }
+
+    public void setTableComment(String tableComment) {
+        this.tableComment = tableComment;
+    }
+
+    public List<ColumnInfo> getColumnList() {
+        return columnList;
+    }
+
+    public void setColumnList(List<ColumnInfo> columnList) {
+        this.columnList = columnList;
+    }
+
+    public List<String> getPackageList() {
+        return packageList;
+    }
+
+    public void setPackageList(List<String> packageList) {
+        this.packageList = packageList;
     }
 }

@@ -2,7 +2,6 @@ package com.bytechaocai.fastweb.codegenerate.generate.crud;
 
 import com.bytechaocai.fastweb.codegenerate.bean.crud.ColumnInfo;
 import com.bytechaocai.fastweb.codegenerate.bean.crud.CrudConfig;
-import com.bytechaocai.fastweb.codegenerate.bean.crud.CrudTableConfig;
 import com.bytechaocai.fastweb.codegenerate.exceptions.CrudExceptionCode;
 import com.bytechaocai.fastweb.core.exceptions.SystemException;
 import com.bytechaocai.fastweb.core.exceptions.SystemExceptionCode;
@@ -11,6 +10,7 @@ import com.bytechaocai.fastweb.core.util.StrUtil;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +56,7 @@ public class CrudGenerator {
      * jdbc类型。
      */
     private static final Map<Integer, String> JDBC_TYPE_MAP = new HashMap<>();
+    private static VelocityEngine velocityEngine;
 
     static {
         JAVA_TYPE_MAP.put(Types.BIT, "Byte");
@@ -150,7 +151,6 @@ public class CrudGenerator {
     }
 
     private CrudConfig crudConfig;
-    private CrudTableConfig crudTableConfig;
     /**
      * 数据库连接，需要自己关闭。
      */
@@ -235,16 +235,15 @@ public class CrudGenerator {
                 }
                 list.add(columnInfo);
             }
-            crudTableConfig.setColumnList(list);
+            crudConfig.setColumnList(list);
         } catch (SQLException e) {
             throw new SystemException(CrudExceptionCode.LOAD_COLUMN_ERROR, e);
         }
 
         try (ResultSet tableRs = metaData.getTables(null, null, crudConfig.getTableName(), null)) {
             tableRs.next();
-            crudTableConfig = new CrudTableConfig();
-            crudTableConfig.setTableName(tableRs.getString("TABLE_NAME"));
-            crudTableConfig.setTableComment(tableRs.getString("REMARKS"));
+            crudConfig.setTableName(tableRs.getString("TABLE_NAME"));
+            crudConfig.setTableComment(tableRs.getString("REMARKS"));
         } catch (SQLException e) {
             throw new SystemException(CrudExceptionCode.LOAD_TABLE_ERROR, e);
         }
@@ -259,7 +258,7 @@ public class CrudGenerator {
                 StrUtil.underlineToUpperCamel(crudConfig.getTableName()) + crudConfig.getEntitySuffix());
         crudConfig.setAuthor(System.getProperty("user.name"));
         Set<String> set = new HashSet<>();
-        for (ColumnInfo columnInfo : crudTableConfig.getColumnList()) {
+        for (ColumnInfo columnInfo : crudConfig.getColumnList()) {
             String columnName = columnInfo.getColumnName();
             columnInfo.setFieldName(StrUtil.underlineToLowerCamel(columnName));
             columnInfo.setUpperCamelFieldName(StrUtil.underlineToUpperCamel(columnName));
@@ -270,7 +269,7 @@ public class CrudGenerator {
             columnInfo.setJdbcType(JDBC_TYPE_MAP.get(columnInfo.getDataType()));
             columnInfo.setComment(columnInfo.getComment() + "。");
         }
-        crudTableConfig.getPackageList().addAll(set);
+        crudConfig.getPackageList().addAll(set);
     }
 
     /**
@@ -279,8 +278,7 @@ public class CrudGenerator {
     public void generate() {
         Context context = new VelocityContext();
         context.put("crudConfig", crudConfig);
-        context.put("tableConfig", crudTableConfig);
-        context.put("columnList", crudTableConfig.getColumnList());
+        context.put("columnList", crudConfig.getColumnList());
         Template template = Velocity.getTemplate("crud/entity.vm", "UTF-8");
         String path = String.format("%s/src/main/java/%s/", crudConfig.getModuleName(),
                 crudConfig.getEntityPackage().replace(".", "/"));
