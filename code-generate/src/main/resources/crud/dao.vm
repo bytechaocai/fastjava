@@ -1,5 +1,5 @@
 #parse("crud/base.vm")
-package $crudConfig.daoPackage;
+package $daoPackage;
 
 import org.apache.ibatis.annotations.Mapper;
 

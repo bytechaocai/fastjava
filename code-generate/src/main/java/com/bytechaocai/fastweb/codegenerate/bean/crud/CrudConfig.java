@@ -38,7 +38,7 @@ public class CrudConfig {
     /**
      * VO类包名。
      */
-    private String VOPackage;
+    private String voPackage;
     /**
      * service类包名。
      */
@@ -104,12 +104,12 @@ public class CrudConfig {
         this.daoPackage = daoPackage;
     }
 
-    public String getVOPackage() {
-        return VOPackage;
+    public String getVoPackage() {
+        return voPackage;
     }
 
-    public void setVOPackage(String VOPackage) {
-        this.VOPackage = VOPackage;
+    public void setVoPackage(String voPackage) {
+        this.voPackage = voPackage;
     }
 
     public String getServicePackage() {

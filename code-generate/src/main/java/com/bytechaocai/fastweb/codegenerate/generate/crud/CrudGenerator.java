@@ -221,27 +221,27 @@ public class CrudGenerator {
 
         // 路径映射
         pathMap.put("crud/dao.vm",
-                joinPath(MAIN_JAVA, rootPath, "dao", crudConfig.getDaoPackage()));
+                joinPath("data", MAIN_JAVA, rootPath, "dao", crudConfig.getDaoPackage()));
         pathMap.put("crud/dao-test.vm",
-                joinPath(TEST_JAVA, rootPath, "dao", crudConfig.getDaoPackage()));
+                joinPath("data", TEST_JAVA, rootPath, "dao", crudConfig.getDaoPackage()));
         pathMap.put("crud/dao-xml.vm",
-                joinPath(MAIN_RESOURCE, "mappers"));
+                joinPath("data", MAIN_RESOURCE, "mappers"));
         pathMap.put("crud/entity.vm",
-                joinPath(MAIN_JAVA, rootPath, "entity", crudConfig.getEntityPackage()));
+                joinPath("data", MAIN_JAVA, rootPath, "entity", crudConfig.getEntityPackage()));
         pathMap.put("crud/repository.vm",
-                joinPath(MAIN_JAVA, rootPath, "dao", crudConfig.getDaoPackage()));
+                joinPath("data", MAIN_JAVA, rootPath, "dao", crudConfig.getDaoPackage()));
         // 服务接口和实现分别放在base和impl目录下。
         pathMap.put("crud/service.vm",
-                joinPath(MAIN_JAVA, rootPath, "service/base", crudConfig.getServicePackage()));
+                joinPath("service", MAIN_JAVA, rootPath, "service/base", crudConfig.getServicePackage()));
         pathMap.put("crud/service-impl.vm",
-                joinPath(MAIN_JAVA, rootPath, "service/impl", crudConfig.getServicePackage()));
+                joinPath("service", MAIN_JAVA, rootPath, "service/impl", crudConfig.getServicePackage()));
         pathMap.put("crud/vo.vm",
-                joinPath(MAIN_JAVA, rootPath, "vo", crudConfig.getVOPackage()));
+                joinPath("data", MAIN_JAVA, rootPath, "vo", crudConfig.getVoPackage()));
 
         // 后缀映射
         suffixMap.put("crud/dao.vm", "DAO.java");
         suffixMap.put("crud/dao-test.vm", "DAOTest.java");
-        suffixMap.put("crud/dao-xml.vm", "-mapper.xml");
+        suffixMap.put("crud/dao-xml.vm", "DAO.xml");
         suffixMap.put("crud/entity.vm", "Entity.java");
         suffixMap.put("crud/repository.vm", "Repository.java");
         suffixMap.put("crud/service.vm", "Service.java");

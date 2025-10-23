@@ -1,12 +1,15 @@
 ##实体类和全类名
-#set($entityClass = "${crudConfig.entityName}${crudConfig.entitySuffix}")
-#set($fullEntityClass = "${crudConfig.entityPackage}.${entityClass}")
+#set($entityClass = "${crudConfig.entityName}Entity")
+#set($entityPackage = "${crudConfig.rootPackage}.entity.${crudConfig.entityPackage}")
+#set($fullEntityClass = "${entityPackage}.${entityClass}")
 ##数据访问对象
-#set($daoClass = "${crudConfig.entityName}${crudConfig.daoSuffix}")
-#set($fullDaoClass = "${crudConfig.daoPackage}.${daoClass}")
+#set($daoClass = "${crudConfig.entityName}DAO")
+#set($daoPackage = "${crudConfig.rootPackage}.dao.${crudConfig.daoPackage}")
+#set($fullDaoClass = "${daoPackage}.${daoClass}")
 ##视图对象
-#set($voClass = "${crudConfig.entityName}${crudConfig.VOSuffix}")
-#set($fullVoClass = "${crudConfig.voPackage}.${voClass}")
+#set($voClass = "${crudConfig.entityName}VO")
+#set($voPackage = "${crudConfig.rootPackage}.vo.${crudConfig.voPackage}")
+#set($fullVoClass = "${voPackage}.${voClass}")
 ##仓库对象
-#set($repositoryClass = "${crudConfig.entityName}${crudConfig.repositorySuffix}")
-#set($fullRepositoryClass = "${crudConfig.repositoryPackage}.${repositoryClass}")
+#set($repositoryClass = "${crudConfig.entityName}Repository")
+#set($fullRepositoryClass = "${daoPackage}.${repositoryClass}")

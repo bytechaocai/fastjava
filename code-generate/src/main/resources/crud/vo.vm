@@ -1,7 +1,7 @@
 #parse("crud/base.vm")
-package $crudConfig.VOPackage;
+package $voPackage;
 
-import ${crudConfig.entityPackage}.${crudConfig.entityName}${crudConfig.entitySuffix};
+import $fullEntityClass;
 
 import java.io.Serial;
 
