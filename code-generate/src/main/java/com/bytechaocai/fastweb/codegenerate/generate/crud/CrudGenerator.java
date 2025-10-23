@@ -166,12 +166,12 @@ public class CrudGenerator {
     private Connection connection;
     /**
      * 模板文件生成的文件目录。
-     *
-     * <p>模板-> {目标目录，文件后缀（包括扩展名）}</p>
-     *
-     * <p>生成配置不是每次都一样，因此不能使用静态成员变量。</p>
      */
-    private Map<String, String[]> pathMap = new HashMap<>();
+    private Map<String, String> pathMap = new HashMap<>();
+    /**
+     * 文件后缀目录，包括扩展名。
+     */
+    private Map<String, String> suffixMap = new HashMap<>();
 
     public CrudGenerator(CrudConfig crudConfig) {
         this.crudConfig = crudConfig;
@@ -216,36 +216,57 @@ public class CrudGenerator {
     private void loadTemplatePath() {
         // 最终的文件路径是map.getValue[0] + entityName + map.value[1];
         LOGGER.info("加载模板和目标文件的路径映射：");
+
+        String rootPath = crudConfig.getRootPackage().replace(".", "/");
+
+        // 路径映射
         pathMap.put("crud/dao.vm",
-                new String[]{joinPath(MAIN_JAVA, crudConfig.getDaoPackage()), crudConfig.getDaoSuffix() + ".java"});
+                joinPath(MAIN_JAVA, rootPath, "dao", crudConfig.getDaoPackage()));
         pathMap.put("crud/dao-test.vm",
-                new String[]{joinPath(TEST_JAVA, crudConfig.getDaoPackage()), crudConfig.getDaoSuffix() + "Test.java"});
+                joinPath(TEST_JAVA, rootPath, "dao", crudConfig.getDaoPackage()));
         pathMap.put("crud/dao-xml.vm",
-                new String[]{joinPath(MAIN_RESOURCE, crudConfig.getMapperLocation()), "-mapper.xml"});
-        pathMap.put("crud/entity.vm", new String[]{joinPath(MAIN_JAVA,
-                crudConfig.getEntityPackage()), crudConfig.getEntitySuffix() + ".java"});
-        pathMap.put("crud/repository.vm", new String[]{joinPath(MAIN_JAVA,
-                crudConfig.getDaoPackage()), crudConfig.getRepositorySuffix() + ".java"});
+                joinPath(MAIN_RESOURCE, "mappers"));
+        pathMap.put("crud/entity.vm",
+                joinPath(MAIN_JAVA, rootPath, "entity", crudConfig.getEntityPackage()));
+        pathMap.put("crud/repository.vm",
+                joinPath(MAIN_JAVA, rootPath, "dao", crudConfig.getDaoPackage()));
         // 服务接口和实现分别放在base和impl目录下。
         pathMap.put("crud/service.vm",
-                new String[]{joinPath(MAIN_JAVA, crudConfig.getServicePackage() + "/base"), ".java"});
+                joinPath(MAIN_JAVA, rootPath, "service/base", crudConfig.getServicePackage()));
         pathMap.put("crud/service-impl.vm",
-                new String[]{joinPath(MAIN_JAVA, crudConfig.getServicePackage() + "/impl"), "Impl.java"});
+                joinPath(MAIN_JAVA, rootPath, "service/impl", crudConfig.getServicePackage()));
         pathMap.put("crud/vo.vm",
-                new String[]{joinPath(MAIN_JAVA, crudConfig.getVOPackage()), "VO.java"});
+                joinPath(MAIN_JAVA, rootPath, "vo", crudConfig.getVOPackage()));
+
+        // 后缀映射
+        suffixMap.put("crud/dao.vm", "DAO.java");
+        suffixMap.put("crud/dao-test.vm", "DAOTest.java");
+        suffixMap.put("crud/dao-xml.vm", "-mapper.xml");
+        suffixMap.put("crud/entity.vm", "Entity.java");
+        suffixMap.put("crud/repository.vm", "Repository.java");
+        suffixMap.put("crud/service.vm", "Service.java");
+        suffixMap.put("crud/service-impl.vm", "ServiceImpl.java");
+        suffixMap.put("crud/vo.vm", "VO.java");
+
         LOGGER.info("路径映射加载完成");
     }
 
     /**
      * 添加包路径。
      *
-     * @param prefix 前缀。
-     * @param packageName 包名。
+     * @param path 路径
      *
      * @return 组合后的路径。
      */
-    private String joinPath(String prefix, String packageName) {
-        return "%s/%s/%s/".formatted(crudConfig.getModuleName(), prefix, packageName.replace(".", "/"));
+    private String joinPath(String... path) {
+        StringBuilder builder = new StringBuilder();
+        for (String s : path) {
+            if (s.isEmpty()) {
+                continue;
+            }
+            builder.append(s.replace(".", "/")).append("/");
+        }
+        return builder.toString();
     }
 
     /**
@@ -337,8 +358,8 @@ public class CrudGenerator {
         context.put("columnList", crudConfig.getColumnList());
         // 先创建目录，防止报错文件不存在
         try {
-            for (Map.Entry<String, String[]> entry : pathMap.entrySet()) {
-                Path path = Paths.get(entry.getValue()[0]);
+            for (Map.Entry<String, String> entry : pathMap.entrySet()) {
+                Path path = Paths.get(entry.getValue());
                 if (Files.exists(path)) {
                     continue;
                 }
@@ -349,12 +370,12 @@ public class CrudGenerator {
             throw new SystemException(SystemExceptionCode.IO_EXCEPTION, e);
         }
 
-        for (Map.Entry<String, String[]> entry : pathMap.entrySet()) {
+        for (Map.Entry<String, String> entry : pathMap.entrySet()) {
             LOGGER.info("解析模板文件{}", entry.getKey());
             Template template = Velocity.getTemplate(entry.getKey(), "UTF-8");
 
             try (FileWriter fileWriter = new FileWriter(
-                    entry.getValue()[0] + crudConfig.getEntityName() + entry.getValue()[1])) {
+                    entry.getValue() + crudConfig.getEntityName() + suffixMap.get(entry.getKey()))) {
                 template.merge(context, fileWriter);
                 fileWriter.flush();
             } catch (IOException e) {
