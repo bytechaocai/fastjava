@@ -20,6 +20,7 @@ import java.beans.PropertyDescriptor;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -44,6 +45,14 @@ import java.util.Set;
  */
 public class CrudGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(CrudGenerator.class);
+    /**
+     * 增删改查模板根目录路径。
+     */
+    private static final String TEMPLATE_ROOT = "crud";
+    private static final String MAIN_JAVA = "src/main/java";
+    private static final String MAIN_RESOURCE = "src/main/resources";
+    private static final String TEST_JAVA = "src/test/resources";
+    private static final String TEST_RESOURCE = "src/test/resources";
     /**
      * Java类型。
      */
@@ -155,6 +164,14 @@ public class CrudGenerator {
      * 数据库连接，需要自己关闭。
      */
     private Connection connection;
+    /**
+     * 模板文件生成的文件目录。
+     *
+     * <p>模板-> {目标目录，文件后缀（包括扩展名）}</p>
+     *
+     * <p>生成配置不是每次都一样，因此不能使用静态成员变量。</p>
+     */
+    private Map<String, String[]> pathMap = new HashMap<>();
 
     public CrudGenerator(CrudConfig crudConfig) {
         this.crudConfig = crudConfig;
@@ -190,6 +207,45 @@ public class CrudGenerator {
         } catch (ReflectiveOperationException e) {
             throw new SystemException(SystemExceptionCode.REFLECT_EXCEPTION, e);
         }
+        loadTemplatePath();
+    }
+
+    /**
+     * 加载模板路径和目标文件路径的映射。
+     */
+    private void loadTemplatePath() {
+        // 最终的文件路径是map.getValue[0] + entityName + map.value[1];
+        LOGGER.info("加载模板和目标文件的路径映射：");
+        pathMap.put("crud/dao.vm",
+                new String[]{joinPath(MAIN_JAVA, crudConfig.getDaoPackage()), crudConfig.getDaoSuffix() + ".java"});
+        pathMap.put("crud/dao-test.vm",
+                new String[]{joinPath(TEST_JAVA, crudConfig.getDaoPackage()), crudConfig.getDaoSuffix() + "Test.java"});
+        pathMap.put("crud/dao-xml.vm",
+                new String[]{joinPath(MAIN_RESOURCE, crudConfig.getMapperLocation()), "-mapper.xml"});
+        pathMap.put("crud/entity.vm", new String[]{joinPath(MAIN_JAVA,
+                crudConfig.getEntityPackage()), crudConfig.getEntitySuffix() + ".java"});
+        pathMap.put("crud/repository.vm", new String[]{joinPath(MAIN_JAVA,
+                crudConfig.getDaoPackage()), crudConfig.getRepositorySuffix() + ".java"});
+        // 服务接口和实现分别放在base和impl目录下。
+        pathMap.put("crud/service.vm",
+                new String[]{joinPath(MAIN_JAVA, crudConfig.getServicePackage() + "/base"), ".java"});
+        pathMap.put("crud/service-impl.vm",
+                new String[]{joinPath(MAIN_JAVA, crudConfig.getServicePackage() + "/impl"), "Impl.java"});
+        pathMap.put("crud/vo.vm",
+                new String[]{joinPath(MAIN_JAVA, crudConfig.getVOPackage()), "VO.java"});
+        LOGGER.info("路径映射加载完成");
+    }
+
+    /**
+     * 添加包路径。
+     *
+     * @param prefix 前缀。
+     * @param packageName 包名。
+     *
+     * @return 组合后的路径。
+     */
+    private String joinPath(String prefix, String packageName) {
+        return "%s/%s/%s/".formatted(crudConfig.getModuleName(), prefix, packageName.replace(".", "/"));
     }
 
     /**
@@ -255,7 +311,7 @@ public class CrudGenerator {
      */
     public void prepare() {
         crudConfig.setEntityName(
-                StrUtil.underlineToUpperCamel(crudConfig.getTableName()) + crudConfig.getEntitySuffix());
+                StrUtil.underlineToUpperCamel(crudConfig.getTableName()));
         crudConfig.setAuthor(System.getProperty("user.name"));
         Set<String> set = new HashSet<>();
         for (ColumnInfo columnInfo : crudConfig.getColumnList()) {
@@ -279,20 +335,32 @@ public class CrudGenerator {
         Context context = new VelocityContext();
         context.put("crudConfig", crudConfig);
         context.put("columnList", crudConfig.getColumnList());
-        Template template = Velocity.getTemplate("crud/entity.vm", "UTF-8");
-        String path = String.format("%s/src/main/java/%s/", crudConfig.getModuleName(),
-                crudConfig.getEntityPackage().replace(".", "/"));
+        // 先创建目录，防止报错文件不存在
         try {
-            Files.createDirectories(Paths.get(path));
+            for (Map.Entry<String, String[]> entry : pathMap.entrySet()) {
+                Path path = Paths.get(entry.getValue()[0]);
+                if (Files.exists(path)) {
+                    continue;
+                }
+                LOGGER.info("模板{}对应的目标文件目录{}不存在，创建目录", entry.getKey(), entry.getValue());
+                Files.createDirectories(path);
+            }
         } catch (IOException e) {
             throw new SystemException(SystemExceptionCode.IO_EXCEPTION, e);
         }
 
-        try (FileWriter fileWriter = new FileWriter(path + crudConfig.getEntityName() + ".java")) {
-            template.merge(context, fileWriter);
-            fileWriter.flush();
-        } catch (IOException e) {
-            throw new SystemException(SystemExceptionCode.IO_EXCEPTION, e);
+        for (Map.Entry<String, String[]> entry : pathMap.entrySet()) {
+            LOGGER.info("解析模板文件{}", entry.getKey());
+            Template template = Velocity.getTemplate(entry.getKey(), "UTF-8");
+
+            try (FileWriter fileWriter = new FileWriter(
+                    entry.getValue()[0] + crudConfig.getEntityName() + entry.getValue()[1])) {
+                template.merge(context, fileWriter);
+                fileWriter.flush();
+            } catch (IOException e) {
+                throw new SystemException(SystemExceptionCode.IO_EXCEPTION, e);
+            }
+            LOGGER.info("模板文件{}解析完成", entry.getKey());
         }
     }
 }

@@ -1,0 +1,13 @@
+#parse("crud/base.vm")
+package $crudConfig.daoPackage;
+
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+* ${crudConfig.tableComment} 数据操作对象。
+*
+* @author ${crudConfig.author}
+*/
+@Mapper
+public interface $daoClass {
+}

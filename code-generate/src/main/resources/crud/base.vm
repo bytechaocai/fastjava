@@ -1,0 +1,9 @@
+##实体类后缀由模板拼接，java中不拼接
+#set($entityClass = "${crudConfig.entityName}${crudConfig.entitySuffix}")
+#set($fullEntityClass = "${crudConfig.entityPackage}.${entityClass}")
+#set($daoClass = "${crudConfig.entityName}${crudConfig.daoSuffix}")
+#set($fullDaoClass = "${crudConfig.daoPackage}.${daoClass}")
+#set($voClass = "${crudConfig.entityName}${crudConfig.VOSuffix}")
+#set($fullVoClass = "${crudConfig.voPackage}.${voClass}")
+#set($repositoryClass = "${crudConfig.entityName}${crudConfig.repositorySuffix}")
+#set($fullRepositoryClass = "${crudConfig.repositoryPackage}.${repositoryClass}")

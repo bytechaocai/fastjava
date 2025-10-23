@@ -56,6 +56,10 @@ public class CrudConfig {
      */
     private String daoSuffix;
     /**
+     * 仓库类后缀。
+     */
+    private String repositorySuffix;
+    /**
      * mapper.xml文件路径。
      */
     private String mapperLocation;
@@ -190,6 +194,14 @@ public class CrudConfig {
 
     public void setDaoSuffix(String daoSuffix) {
         this.daoSuffix = daoSuffix;
+    }
+
+    public String getRepositorySuffix() {
+        return repositorySuffix;
+    }
+
+    public void setRepositorySuffix(String repositorySuffix) {
+        this.repositorySuffix = repositorySuffix;
     }
 
     public String getMapperLocation() {

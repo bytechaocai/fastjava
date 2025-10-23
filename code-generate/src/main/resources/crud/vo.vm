@@ -1,0 +1,16 @@
+#parse("crud/base.vm")
+package $crudConfig.VOPackage;
+
+import ${crudConfig.entityPackage}.${crudConfig.entityName}${crudConfig.entitySuffix};
+
+import java.io.Serial;
+
+/**
+* ${crudConfig.tableComment} 视图对象。
+*
+* @author ${crudConfig.author}
+*/
+public class $voClass extends $entityClass {
+    @Serial
+    private static final long serialVersionUID = 1L;
+}
