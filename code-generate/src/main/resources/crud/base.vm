@@ -1,15 +1,29 @@
 ##实体类和全类名
 #set($entityClass = "${crudConfig.entityName}Entity")
-#set($entityPackage = "${crudConfig.rootPackage}.entity.${crudConfig.entityPackage}")
+#set($entityPackage = "${crudConfig.rootPackage}.data.entity.${crudConfig.entityPackage}")
 #set($fullEntityClass = "${entityPackage}.${entityClass}")
 ##数据访问对象
 #set($daoClass = "${crudConfig.entityName}DAO")
-#set($daoPackage = "${crudConfig.rootPackage}.dao.${crudConfig.daoPackage}")
+#set($daoPackage = "${crudConfig.rootPackage}.data.dao.${crudConfig.daoPackage}")
 #set($fullDaoClass = "${daoPackage}.${daoClass}")
 ##视图对象
 #set($voClass = "${crudConfig.entityName}VO")
-#set($voPackage = "${crudConfig.rootPackage}.vo.${crudConfig.voPackage}")
+#set($voPackage = "${crudConfig.rootPackage}.data.vo.${crudConfig.voPackage}")
 #set($fullVoClass = "${voPackage}.${voClass}")
 ##仓库对象
 #set($repositoryClass = "${crudConfig.entityName}Repository")
 #set($fullRepositoryClass = "${daoPackage}.${repositoryClass}")
+##服务对象
+#set($serviceClass = "${crudConfig.entityName}Service")
+#set($servicePackage = "${crudConfig.rootPackage}.service.base.${crudConfig.servicePackage}")
+#set($fullServiceClass = "${servicePackage}.${serviceClass}")
+#set($serviceImplPackage = "${crudConfig.rootPackage}.service.impl.${crudConfig.servicePackage}")
+
+##查找主键类型
+#foreach($column in $crudConfig.columnList)
+    #if($column.isPrimaryKey)
+        #set($primaryKeyType = $column.javaType)
+        #break
+    #end
+#end
+##我的idea开了在文件尾添加空行功能，这回导致引用base.vm的文件第一行是空行，需要手动去除第一行的空行

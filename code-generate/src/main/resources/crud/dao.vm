@@ -1,6 +1,9 @@
 #parse("crud/base.vm")
 package $daoPackage;
 
+import com.bytechaocai.fastweb.data.dao.BaseDAO;
+import $fullEntityClass;
+
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -9,5 +12,5 @@ import org.apache.ibatis.annotations.Mapper;
 * @author ${crudConfig.author}
 */
 @Mapper
-public interface $daoClass {
+public interface $daoClass extends BaseDAO<$entityClass, $primaryKeyType> {
 }

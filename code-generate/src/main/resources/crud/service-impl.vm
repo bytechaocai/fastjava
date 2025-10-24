@@ -1,0 +1,17 @@
+#parse("crud/base.vm")
+package $serviceImplPackage;
+
+import com.bytechaocai.fastweb.service.impl.BaseServiceImpl;
+import $fullEntityClass;
+import $fullDaoClass;
+import $fullRepositoryClass;
+import $fullServiceClass;
+
+/**
+* $crudConfig.tableComment 服务实现。
+*
+* @author $crudConfig.author
+*/
+public class ${serviceClass}Impl extends BaseServiceImpl<$entityClass, $primaryKeyType, $daoClass, $repositoryClass>
+    implements $serviceClass {
+}

@@ -221,22 +221,22 @@ public class CrudGenerator {
 
         // 路径映射
         pathMap.put("crud/dao.vm",
-                joinPath("data", MAIN_JAVA, rootPath, "dao", crudConfig.getDaoPackage()));
+                joinPath("data", MAIN_JAVA, rootPath, "data/dao", crudConfig.getDaoPackage()));
         pathMap.put("crud/dao-test.vm",
-                joinPath("data", TEST_JAVA, rootPath, "dao", crudConfig.getDaoPackage()));
+                joinPath("data", TEST_JAVA, rootPath, "data/dao", crudConfig.getDaoPackage()));
         pathMap.put("crud/dao-xml.vm",
                 joinPath("data", MAIN_RESOURCE, "mappers"));
         pathMap.put("crud/entity.vm",
-                joinPath("data", MAIN_JAVA, rootPath, "entity", crudConfig.getEntityPackage()));
+                joinPath("data", MAIN_JAVA, rootPath, "data/entity", crudConfig.getEntityPackage()));
         pathMap.put("crud/repository.vm",
-                joinPath("data", MAIN_JAVA, rootPath, "dao", crudConfig.getDaoPackage()));
+                joinPath("data", MAIN_JAVA, rootPath, "data/dao", crudConfig.getDaoPackage()));
         // 服务接口和实现分别放在base和impl目录下。
         pathMap.put("crud/service.vm",
                 joinPath("service", MAIN_JAVA, rootPath, "service/base", crudConfig.getServicePackage()));
         pathMap.put("crud/service-impl.vm",
                 joinPath("service", MAIN_JAVA, rootPath, "service/impl", crudConfig.getServicePackage()));
         pathMap.put("crud/vo.vm",
-                joinPath("data", MAIN_JAVA, rootPath, "vo", crudConfig.getVoPackage()));
+                joinPath("data", MAIN_JAVA, rootPath, "data/vo", crudConfig.getVoPackage()));
 
         // 后缀映射
         suffixMap.put("crud/dao.vm", "DAO.java");
