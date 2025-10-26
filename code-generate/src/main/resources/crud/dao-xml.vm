@@ -1,45 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 #parse("crud/base.vm")
 ##表别名
 #set($alias = "t_$crudConfig.tableName")
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="$fullDaoClass">
-    <resultMap id="BaseResultMap" type="$fullEntityClass">
-        #foreach($column in $crudConfig.columnList)
-        #if($column.isPrimaryKey)
-        <id property="${column.fieldName}" column="${column.columnName}" jdbcType="${column.jdbcType}"/>
-        #else
-        <result property="${column.fieldName}" column="${column.columnName}" jdbcType="${column.jdbcType}"/>
-        #end
-        #end
-    </resultMap>
+  <resultMap id="BaseResultMap" type="$fullEntityClass">
+    #foreach($column in $crudConfig.columnList)
+    #if($column.isPrimaryKey)
+    <id property="${column.fieldName}" column="${column.columnName}" jdbcType="${column.jdbcType}"/>
+    #else
+    <result property="${column.fieldName}" column="${column.columnName}" jdbcType="${column.jdbcType}"/>
+    #end
+    #end
+  </resultMap>
 
-    <resultMap id="BaseVOMap" type="$fullVoClass" extends="BaseResultMap"/>
+  <resultMap id="BaseVOMap" type="$fullVoClass" extends="BaseResultMap"/>
 
-    <!-- 基础列，带别名，使用时必须带别名 -->
-    <sql id="BaseColumnList">
-        #foreach($c in $crudConfig.columnList)
-        $alias.$c.columnName,
-        #end
-    </sql>
+  <!-- 基础列，带别名，使用时必须带别名 -->
+  <sql id="BaseColumnList">
+    #foreach($c in $crudConfig.columnList)
+    $alias.$c.columnName,
+    #end
+  </sql>
 
-    <!-- 批量插入 -->
-    <insert id="batchInsert" parameterType="list">
-        insert into $crudConfig.tableName
-        values
-        <foreach item="item" collection="list" separator=",">
-            #foreach($column in $crudConfig.columnList)
-            #{${column.fieldName}, jdbcType=${column.jdbcType}}
-            #end
-        </foreach>
-    </insert>
+  <!-- 批量插入 -->
+  <insert id="batchInsert" parameterType="list">
+    insert into $crudConfig.tableName
+    values
+    <foreach item="item" collection="list" separator=",">
+      #foreach($column in $crudConfig.columnList)
+      #{${column.fieldName}, jdbcType=${column.jdbcType}}
+      #end
+    </foreach>
+  </insert>
 
-    <!-- 单表精确查询 -->
-    <sql id="BaseWhere">
-        #foreach($column in $crudConfig.columnList)
-        <if test="${column.fieldName} != null and ${column.fieldName} != ''">
-            ${alias}.${column.columnName} = #{${column.fieldName}, jdbcType=${column.jdbcType}}
-        </if>
-        #end
-    </sql>
+  <!-- 单表精确查询 -->
+  <sql id="BaseWhere">
+    #foreach($column in $crudConfig.columnList)
+    <if test="${column.fieldName} != null and ${column.fieldName} != ''">
+      ${alias}.${column.columnName} = #{${column.fieldName}, jdbcType=${column.jdbcType}}
+    </if>
+    #end
+  </sql>
 </mapper>

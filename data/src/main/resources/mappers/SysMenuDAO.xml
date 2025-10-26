@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bytechaocai.fastweb.data.dao.system.SysMenuDAO">
+  <resultMap id="BaseResultMap" type="com.bytechaocai.fastweb.data.entity.system.SysMenuEntity">
+    <id property="menuId" column="menu_id" jdbcType="VARCHAR"/>
+    <result property="name" column="name" jdbcType="VARCHAR"/>
+    <result property="parentId" column="parent_id" jdbcType="VARCHAR"/>
+    <result property="menuOrder" column="menu_order" jdbcType="INTEGER"/>
+    <result property="url" column="url" jdbcType="VARCHAR"/>
+    <result property="target" column="target" jdbcType="INTEGER"/>
+    <result property="type" column="type" jdbcType="INTEGER"/>
+    <result property="status" column="status" jdbcType="INTEGER"/>
+    <result property="permission" column="permission" jdbcType="VARCHAR"/>
+    <result property="icon" column="icon" jdbcType="VARCHAR"/>
+    <result property="description" column="description" jdbcType="VARCHAR"/>
+    <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+  </resultMap>
+
+  <resultMap id="BaseVOMap" type="com.bytechaocai.fastweb.data.vo.system.SysMenuVO" extends="BaseResultMap"/>
+
+  <!-- 基础列，带别名，使用时必须带别名 -->
+  <sql id="BaseColumnList">
+    t_sys_menu.menu_id,
+    t_sys_menu.name,
+    t_sys_menu.parent_id,
+    t_sys_menu.menu_order,
+    t_sys_menu.url,
+    t_sys_menu.target,
+    t_sys_menu.type,
+    t_sys_menu.status,
+    t_sys_menu.permission,
+    t_sys_menu.icon,
+    t_sys_menu.description,
+    t_sys_menu.create_by,
+    t_sys_menu.create_time,
+    t_sys_menu.update_by,
+    t_sys_menu.update_time,
+  </sql>
+
+  <!-- 批量插入 -->
+  <insert id="batchInsert" parameterType="list">
+    insert into sys_menu
+    values
+    <foreach item="item" collection="list" separator=",">
+      #{menuId, jdbcType=VARCHAR}
+      #{name, jdbcType=VARCHAR}
+      #{parentId, jdbcType=VARCHAR}
+      #{menuOrder, jdbcType=INTEGER}
+      #{url, jdbcType=VARCHAR}
+      #{target, jdbcType=INTEGER}
+      #{type, jdbcType=INTEGER}
+      #{status, jdbcType=INTEGER}
+      #{permission, jdbcType=VARCHAR}
+      #{icon, jdbcType=VARCHAR}
+      #{description, jdbcType=VARCHAR}
+      #{createBy, jdbcType=VARCHAR}
+      #{createTime, jdbcType=TIMESTAMP}
+      #{updateBy, jdbcType=VARCHAR}
+      #{updateTime, jdbcType=TIMESTAMP}
+    </foreach>
+  </insert>
+
+  <!-- 单表精确查询 -->
+  <sql id="BaseWhere">
+    <if test="menuId != null and menuId != ''">
+      t_sys_menu.menu_id = #{menuId, jdbcType=VARCHAR}
+    </if>
+    <if test="name != null and name != ''">
+      t_sys_menu.name = #{name, jdbcType=VARCHAR}
+    </if>
+    <if test="parentId != null and parentId != ''">
+      t_sys_menu.parent_id = #{parentId, jdbcType=VARCHAR}
+    </if>
+    <if test="menuOrder != null and menuOrder != ''">
+      t_sys_menu.menu_order = #{menuOrder, jdbcType=INTEGER}
+    </if>
+    <if test="url != null and url != ''">
+      t_sys_menu.url = #{url, jdbcType=VARCHAR}
+    </if>
+    <if test="target != null and target != ''">
+      t_sys_menu.target = #{target, jdbcType=INTEGER}
+    </if>
+    <if test="type != null and type != ''">
+      t_sys_menu.type = #{type, jdbcType=INTEGER}
+    </if>
+    <if test="status != null and status != ''">
+      t_sys_menu.status = #{status, jdbcType=INTEGER}
+    </if>
+    <if test="permission != null and permission != ''">
+      t_sys_menu.permission = #{permission, jdbcType=VARCHAR}
+    </if>
+    <if test="icon != null and icon != ''">
+      t_sys_menu.icon = #{icon, jdbcType=VARCHAR}
+    </if>
+    <if test="description != null and description != ''">
+      t_sys_menu.description = #{description, jdbcType=VARCHAR}
+    </if>
+    <if test="createBy != null and createBy != ''">
+      t_sys_menu.create_by = #{createBy, jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null and createTime != ''">
+      t_sys_menu.create_time = #{createTime, jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateBy != null and updateBy != ''">
+      t_sys_menu.update_by = #{updateBy, jdbcType=VARCHAR}
+    </if>
+    <if test="updateTime != null and updateTime != ''">
+      t_sys_menu.update_time = #{updateTime, jdbcType=TIMESTAMP}
+    </if>
+  </sql>
+</mapper>

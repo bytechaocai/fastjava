@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bytechaocai.fastweb.data.dao.system.SysMessageDAO">
+  <resultMap id="BaseResultMap" type="com.bytechaocai.fastweb.data.entity.system.SysMessageEntity">
+    <id property="messageCode" column="message_code" jdbcType="VARCHAR"/>
+    <result property="messageText" column="message_text" jdbcType="VARCHAR"/>
+    <result property="messageType" column="message_type" jdbcType="INTEGER"/>
+    <result property="messageStatus" column="message_status" jdbcType="INTEGER"/>
+    <result property="messageDescription" column="message_description" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <resultMap id="BaseVOMap" type="com.bytechaocai.fastweb.data.vo.system.SysMessageVO" extends="BaseResultMap"/>
+
+  <!-- 基础列，带别名，使用时必须带别名 -->
+  <sql id="BaseColumnList">
+    t_sys_message.message_code,
+    t_sys_message.message_text,
+    t_sys_message.message_type,
+    t_sys_message.message_status,
+    t_sys_message.message_description,
+  </sql>
+
+  <!-- 批量插入 -->
+  <insert id="batchInsert" parameterType="list">
+    insert into sys_message
+    values
+    <foreach item="item" collection="list" separator=",">
+      #{messageCode, jdbcType=VARCHAR}
+      #{messageText, jdbcType=VARCHAR}
+      #{messageType, jdbcType=INTEGER}
+      #{messageStatus, jdbcType=INTEGER}
+      #{messageDescription, jdbcType=VARCHAR}
+    </foreach>
+  </insert>
+
+  <!-- 单表精确查询 -->
+  <sql id="BaseWhere">
+    <if test="messageCode != null and messageCode != ''">
+      t_sys_message.message_code = #{messageCode, jdbcType=VARCHAR}
+    </if>
+    <if test="messageText != null and messageText != ''">
+      t_sys_message.message_text = #{messageText, jdbcType=VARCHAR}
+    </if>
+    <if test="messageType != null and messageType != ''">
+      t_sys_message.message_type = #{messageType, jdbcType=INTEGER}
+    </if>
+    <if test="messageStatus != null and messageStatus != ''">
+      t_sys_message.message_status = #{messageStatus, jdbcType=INTEGER}
+    </if>
+    <if test="messageDescription != null and messageDescription != ''">
+      t_sys_message.message_description = #{messageDescription, jdbcType=VARCHAR}
+    </if>
+  </sql>
+</mapper>

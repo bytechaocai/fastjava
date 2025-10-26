@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bytechaocai.fastweb.data.dao.system.SysEnumValueDAO">
+  <resultMap id="BaseResultMap" type="com.bytechaocai.fastweb.data.entity.system.SysEnumValueEntity">
+    <id property="enumType" column="enum_type" jdbcType="VARCHAR"/>
+    <result property="enumValue" column="enum_value" jdbcType="VARCHAR"/>
+    <result property="enumName" column="enum_name" jdbcType="VARCHAR"/>
+    <result property="enumSort" column="enum_sort" jdbcType="INTEGER"/>
+    <result property="enumDefault" column="enum_default" jdbcType="BIT"/>
+    <result property="enumStatus" column="enum_status" jdbcType="INTEGER"/>
+    <result property="enumDescription" column="enum_description" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <resultMap id="BaseVOMap" type="com.bytechaocai.fastweb.data.vo.system.SysEnumValueVO" extends="BaseResultMap"/>
+
+  <!-- 基础列，带别名，使用时必须带别名 -->
+  <sql id="BaseColumnList">
+    t_sys_enum_value.enum_type,
+    t_sys_enum_value.enum_value,
+    t_sys_enum_value.enum_name,
+    t_sys_enum_value.enum_sort,
+    t_sys_enum_value.enum_default,
+    t_sys_enum_value.enum_status,
+    t_sys_enum_value.enum_description,
+  </sql>
+
+  <!-- 批量插入 -->
+  <insert id="batchInsert" parameterType="list">
+    insert into sys_enum_value
+    values
+    <foreach item="item" collection="list" separator=",">
+      #{enumType, jdbcType=VARCHAR}
+      #{enumValue, jdbcType=VARCHAR}
+      #{enumName, jdbcType=VARCHAR}
+      #{enumSort, jdbcType=INTEGER}
+      #{enumDefault, jdbcType=BIT}
+      #{enumStatus, jdbcType=INTEGER}
+      #{enumDescription, jdbcType=VARCHAR}
+    </foreach>
+  </insert>
+
+  <!-- 单表精确查询 -->
+  <sql id="BaseWhere">
+    <if test="enumType != null and enumType != ''">
+      t_sys_enum_value.enum_type = #{enumType, jdbcType=VARCHAR}
+    </if>
+    <if test="enumValue != null and enumValue != ''">
+      t_sys_enum_value.enum_value = #{enumValue, jdbcType=VARCHAR}
+    </if>
+    <if test="enumName != null and enumName != ''">
+      t_sys_enum_value.enum_name = #{enumName, jdbcType=VARCHAR}
+    </if>
+    <if test="enumSort != null and enumSort != ''">
+      t_sys_enum_value.enum_sort = #{enumSort, jdbcType=INTEGER}
+    </if>
+    <if test="enumDefault != null and enumDefault != ''">
+      t_sys_enum_value.enum_default = #{enumDefault, jdbcType=BIT}
+    </if>
+    <if test="enumStatus != null and enumStatus != ''">
+      t_sys_enum_value.enum_status = #{enumStatus, jdbcType=INTEGER}
+    </if>
+    <if test="enumDescription != null and enumDescription != ''">
+      t_sys_enum_value.enum_description = #{enumDescription, jdbcType=VARCHAR}
+    </if>
+  </sql>
+</mapper>

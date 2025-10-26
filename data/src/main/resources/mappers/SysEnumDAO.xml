@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bytechaocai.fastweb.data.dao.system.SysEnumDAO">
+  <resultMap id="BaseResultMap" type="com.bytechaocai.fastweb.data.entity.system.SysEnumEntity">
+    <id property="enumType" column="enum_type" jdbcType="VARCHAR"/>
+    <result property="enumName" column="enum_name" jdbcType="VARCHAR"/>
+    <result property="enumDescription" column="enum_description" jdbcType="VARCHAR"/>
+    <result property="enumStatus" column="enum_status" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <resultMap id="BaseVOMap" type="com.bytechaocai.fastweb.data.vo.system.SysEnumVO" extends="BaseResultMap"/>
+
+  <!-- 基础列，带别名，使用时必须带别名 -->
+  <sql id="BaseColumnList">
+    t_sys_enum.enum_type,
+    t_sys_enum.enum_name,
+    t_sys_enum.enum_description,
+    t_sys_enum.enum_status,
+  </sql>
+
+  <!-- 批量插入 -->
+  <insert id="batchInsert" parameterType="list">
+    insert into sys_enum
+    values
+    <foreach item="item" collection="list" separator=",">
+      #{enumType, jdbcType=VARCHAR}
+      #{enumName, jdbcType=VARCHAR}
+      #{enumDescription, jdbcType=VARCHAR}
+      #{enumStatus, jdbcType=INTEGER}
+    </foreach>
+  </insert>
+
+  <!-- 单表精确查询 -->
+  <sql id="BaseWhere">
+    <if test="enumType != null and enumType != ''">
+      t_sys_enum.enum_type = #{enumType, jdbcType=VARCHAR}
+    </if>
+    <if test="enumName != null and enumName != ''">
+      t_sys_enum.enum_name = #{enumName, jdbcType=VARCHAR}
+    </if>
+    <if test="enumDescription != null and enumDescription != ''">
+      t_sys_enum.enum_description = #{enumDescription, jdbcType=VARCHAR}
+    </if>
+    <if test="enumStatus != null and enumStatus != ''">
+      t_sys_enum.enum_status = #{enumStatus, jdbcType=INTEGER}
+    </if>
+  </sql>
+</mapper>

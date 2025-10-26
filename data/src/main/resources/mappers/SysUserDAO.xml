@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bytechaocai.fastweb.data.dao.system.SysUserDAO">
+  <resultMap id="BaseResultMap" type="com.bytechaocai.fastweb.data.entity.system.SysUserEntity">
+    <id property="userId" column="user_id" jdbcType="VARCHAR"/>
+    <result property="loginName" column="login_name" jdbcType="VARCHAR"/>
+    <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+    <result property="userType" column="user_type" jdbcType="SMALLINT"/>
+    <result property="email" column="email" jdbcType="VARCHAR"/>
+    <result property="phoneNumber" column="phone_number" jdbcType="VARCHAR"/>
+    <result property="gender" column="gender" jdbcType="SMALLINT"/>
+    <result property="password" column="password" jdbcType="VARCHAR"/>
+    <result property="salt" column="salt" jdbcType="VARCHAR"/>
+    <result property="status" column="status" jdbcType="INTEGER"/>
+    <result property="description" column="description" jdbcType="VARCHAR"/>
+    <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+  </resultMap>
+
+  <resultMap id="BaseVOMap" type="com.bytechaocai.fastweb.data.vo.system.SysUserVO" extends="BaseResultMap"/>
+
+  <!-- 基础列，带别名，使用时必须带别名 -->
+  <sql id="BaseColumnList">
+    t_sys_user.user_id,
+    t_sys_user.login_name,
+    t_sys_user.user_name,
+    t_sys_user.user_type,
+    t_sys_user.email,
+    t_sys_user.phone_number,
+    t_sys_user.gender,
+    t_sys_user.password,
+    t_sys_user.salt,
+    t_sys_user.status,
+    t_sys_user.description,
+    t_sys_user.create_by,
+    t_sys_user.create_time,
+    t_sys_user.update_by,
+    t_sys_user.update_time,
+  </sql>
+
+  <!-- 批量插入 -->
+  <insert id="batchInsert" parameterType="list">
+    insert into sys_user
+    values
+    <foreach item="item" collection="list" separator=",">
+      #{userId, jdbcType=VARCHAR}
+      #{loginName, jdbcType=VARCHAR}
+      #{userName, jdbcType=VARCHAR}
+      #{userType, jdbcType=SMALLINT}
+      #{email, jdbcType=VARCHAR}
+      #{phoneNumber, jdbcType=VARCHAR}
+      #{gender, jdbcType=SMALLINT}
+      #{password, jdbcType=VARCHAR}
+      #{salt, jdbcType=VARCHAR}
+      #{status, jdbcType=INTEGER}
+      #{description, jdbcType=VARCHAR}
+      #{createBy, jdbcType=VARCHAR}
+      #{createTime, jdbcType=TIMESTAMP}
+      #{updateBy, jdbcType=VARCHAR}
+      #{updateTime, jdbcType=TIMESTAMP}
+    </foreach>
+  </insert>
+
+  <!-- 单表精确查询 -->
+  <sql id="BaseWhere">
+    <if test="userId != null and userId != ''">
+      t_sys_user.user_id = #{userId, jdbcType=VARCHAR}
+    </if>
+    <if test="loginName != null and loginName != ''">
+      t_sys_user.login_name = #{loginName, jdbcType=VARCHAR}
+    </if>
+    <if test="userName != null and userName != ''">
+      t_sys_user.user_name = #{userName, jdbcType=VARCHAR}
+    </if>
+    <if test="userType != null and userType != ''">
+      t_sys_user.user_type = #{userType, jdbcType=SMALLINT}
+    </if>
+    <if test="email != null and email != ''">
+      t_sys_user.email = #{email, jdbcType=VARCHAR}
+    </if>
+    <if test="phoneNumber != null and phoneNumber != ''">
+      t_sys_user.phone_number = #{phoneNumber, jdbcType=VARCHAR}
+    </if>
+    <if test="gender != null and gender != ''">
+      t_sys_user.gender = #{gender, jdbcType=SMALLINT}
+    </if>
+    <if test="password != null and password != ''">
+      t_sys_user.password = #{password, jdbcType=VARCHAR}
+    </if>
+    <if test="salt != null and salt != ''">
+      t_sys_user.salt = #{salt, jdbcType=VARCHAR}
+    </if>
+    <if test="status != null and status != ''">
+      t_sys_user.status = #{status, jdbcType=INTEGER}
+    </if>
+    <if test="description != null and description != ''">
+      t_sys_user.description = #{description, jdbcType=VARCHAR}
+    </if>
+    <if test="createBy != null and createBy != ''">
+      t_sys_user.create_by = #{createBy, jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null and createTime != ''">
+      t_sys_user.create_time = #{createTime, jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateBy != null and updateBy != ''">
+      t_sys_user.update_by = #{updateBy, jdbcType=VARCHAR}
+    </if>
+    <if test="updateTime != null and updateTime != ''">
+      t_sys_user.update_time = #{updateTime, jdbcType=TIMESTAMP}
+    </if>
+  </sql>
+</mapper>

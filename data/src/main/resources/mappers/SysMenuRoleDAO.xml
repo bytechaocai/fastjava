@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bytechaocai.fastweb.data.dao.system.SysMenuRoleDAO">
+  <resultMap id="BaseResultMap" type="com.bytechaocai.fastweb.data.entity.system.SysMenuRoleEntity">
+    <id property="rmId" column="rm_id" jdbcType="VARCHAR"/>
+    <result property="roleId" column="role_id" jdbcType="VARCHAR"/>
+    <result property="menuId" column="menu_id" jdbcType="VARCHAR"/>
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+  </resultMap>
+
+  <resultMap id="BaseVOMap" type="com.bytechaocai.fastweb.data.vo.system.SysMenuRoleVO" extends="BaseResultMap"/>
+
+  <!-- 基础列，带别名，使用时必须带别名 -->
+  <sql id="BaseColumnList">
+    t_sys_menu_role.rm_id,
+    t_sys_menu_role.role_id,
+    t_sys_menu_role.menu_id,
+    t_sys_menu_role.create_time,
+  </sql>
+
+  <!-- 批量插入 -->
+  <insert id="batchInsert" parameterType="list">
+    insert into sys_menu_role
+    values
+    <foreach item="item" collection="list" separator=",">
+      #{rmId, jdbcType=VARCHAR}
+      #{roleId, jdbcType=VARCHAR}
+      #{menuId, jdbcType=VARCHAR}
+      #{createTime, jdbcType=TIMESTAMP}
+    </foreach>
+  </insert>
+
+  <!-- 单表精确查询 -->
+  <sql id="BaseWhere">
+    <if test="rmId != null and rmId != ''">
+      t_sys_menu_role.rm_id = #{rmId, jdbcType=VARCHAR}
+    </if>
+    <if test="roleId != null and roleId != ''">
+      t_sys_menu_role.role_id = #{roleId, jdbcType=VARCHAR}
+    </if>
+    <if test="menuId != null and menuId != ''">
+      t_sys_menu_role.menu_id = #{menuId, jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null and createTime != ''">
+      t_sys_menu_role.create_time = #{createTime, jdbcType=TIMESTAMP}
+    </if>
+  </sql>
+</mapper>

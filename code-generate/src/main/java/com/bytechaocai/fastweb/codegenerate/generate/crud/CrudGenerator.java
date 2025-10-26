@@ -14,9 +14,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 
-import java.beans.PropertyDescriptor;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -51,7 +49,7 @@ public class CrudGenerator {
     private static final String TEMPLATE_ROOT = "crud";
     private static final String MAIN_JAVA = "src/main/java";
     private static final String MAIN_RESOURCE = "src/main/resources";
-    private static final String TEST_JAVA = "src/test/resources";
+    private static final String TEST_JAVA = "src/test/java";
     private static final String TEST_RESOURCE = "src/test/resources";
     /**
      * Java类型。
@@ -183,30 +181,8 @@ public class CrudGenerator {
     public void loadDefaultConfig() {
         LOGGER.info("加载crud生成配置");
         Properties properties = PropertiesUtil.load("classpath:default.properties");
-        PropertyDescriptor[] pds = BeanUtils.getPropertyDescriptors(CrudConfig.class);
-        try {
-            for (PropertyDescriptor pd : pds) {
-                String name = pd.getName();
-                if ("class".equals(name)) {
-                    continue;
-                }
-                Class<?> propertyType = pd.getPropertyType();
-                Object value = pd.getReadMethod().invoke(crudConfig);
-                if (value != null) {
-                    LOGGER.info("属性{}有值，不需要加载", name);
-                    continue;
-                }
-                if (propertyType == Boolean.TYPE) {
-                    value = Boolean.parseBoolean(properties.getProperty("crud." + name));
-                } else {
-                    value = properties.getProperty("crud." + name);
-                }
-                pd.getWriteMethod().invoke(crudConfig, value);
-            }
-            LOGGER.info("crud生成配置加载完成");
-        } catch (ReflectiveOperationException e) {
-            throw new SystemException(SystemExceptionCode.REFLECT_EXCEPTION, e);
-        }
+        crudConfig.setRootPackage(properties.getProperty("crud.rootPackage"));
+        crudConfig.setAuthor(properties.getProperty("crud.author"));
         loadTemplatePath();
     }
 
@@ -222,8 +198,8 @@ public class CrudGenerator {
         // 路径映射
         pathMap.put("crud/dao.vm",
                 joinPath("data", MAIN_JAVA, rootPath, "data/dao", crudConfig.getDaoPackage()));
-        pathMap.put("crud/dao-test.vm",
-                joinPath("data", TEST_JAVA, rootPath, "data/dao", crudConfig.getDaoPackage()));
+        // pathMap.put("crud/dao-test.vm",
+        //         joinPath("data", TEST_JAVA, rootPath, "data/dao", crudConfig.getDaoPackage()));
         pathMap.put("crud/dao-xml.vm",
                 joinPath("data", MAIN_RESOURCE, "mappers"));
         pathMap.put("crud/entity.vm",
@@ -333,7 +309,6 @@ public class CrudGenerator {
     public void prepare() {
         crudConfig.setEntityName(
                 StrUtil.underlineToUpperCamel(crudConfig.getTableName()));
-        crudConfig.setAuthor(System.getProperty("user.name"));
         Set<String> set = new HashSet<>();
         for (ColumnInfo columnInfo : crudConfig.getColumnList()) {
             String columnName = columnInfo.getColumnName();

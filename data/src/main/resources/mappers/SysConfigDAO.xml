@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bytechaocai.fastweb.data.dao.system.SysConfigDAO">
+  <resultMap id="BaseResultMap" type="com.bytechaocai.fastweb.data.entity.system.SysConfigEntity">
+    <id property="configCode" column="config_code" jdbcType="VARCHAR"/>
+    <result property="configName" column="config_name" jdbcType="VARCHAR"/>
+    <result property="configValue" column="config_value" jdbcType="VARCHAR"/>
+    <result property="configDescription" column="config_description" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <resultMap id="BaseVOMap" type="com.bytechaocai.fastweb.data.vo.system.SysConfigVO" extends="BaseResultMap"/>
+
+  <!-- 基础列，带别名，使用时必须带别名 -->
+  <sql id="BaseColumnList">
+    t_sys_config.config_code,
+    t_sys_config.config_name,
+    t_sys_config.config_value,
+    t_sys_config.config_description,
+  </sql>
+
+  <!-- 批量插入 -->
+  <insert id="batchInsert" parameterType="list">
+    insert into sys_config
+    values
+    <foreach item="item" collection="list" separator=",">
+      #{configCode, jdbcType=VARCHAR}
+      #{configName, jdbcType=VARCHAR}
+      #{configValue, jdbcType=VARCHAR}
+      #{configDescription, jdbcType=VARCHAR}
+    </foreach>
+  </insert>
+
+  <!-- 单表精确查询 -->
+  <sql id="BaseWhere">
+    <if test="configCode != null and configCode != ''">
+      t_sys_config.config_code = #{configCode, jdbcType=VARCHAR}
+    </if>
+    <if test="configName != null and configName != ''">
+      t_sys_config.config_name = #{configName, jdbcType=VARCHAR}
+    </if>
+    <if test="configValue != null and configValue != ''">
+      t_sys_config.config_value = #{configValue, jdbcType=VARCHAR}
+    </if>
+    <if test="configDescription != null and configDescription != ''">
+      t_sys_config.config_description = #{configDescription, jdbcType=VARCHAR}
+    </if>
+  </sql>
+</mapper>
