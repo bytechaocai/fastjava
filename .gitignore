@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+#测试用，不要提交，防止泄露密码
+datasource.properties
