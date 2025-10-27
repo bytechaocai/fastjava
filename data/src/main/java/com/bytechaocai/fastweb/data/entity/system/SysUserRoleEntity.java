@@ -1,4 +1,3 @@
-
 package com.bytechaocai.fastweb.data.entity.system;
 
 import jakarta.persistence.Column;
@@ -48,6 +47,7 @@ public class SysUserRoleEntity implements Serializable {
     public void setUrId(String urId) {
         this.urId = urId;
     }
+
     public String getUserId() {
         return this.userId;
     }
@@ -55,6 +55,7 @@ public class SysUserRoleEntity implements Serializable {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
     public String getRoleId() {
         return this.roleId;
     }
@@ -62,6 +63,7 @@ public class SysUserRoleEntity implements Serializable {
     public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
+
     public LocalDateTime getCreateTime() {
         return this.createTime;
     }

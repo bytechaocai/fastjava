@@ -7,9 +7,9 @@ import $fullDaoClass;
 import $fullRepositoryClass;
 
 /**
-* $crudConfig.tableComment 服务实现。
-*
-* @author $crudConfig.author
-*/
+ * $crudConfig.tableComment 服务实现。
+ *
+ * @author $crudConfig.author
+ */
 public interface ${serviceClass} extends BaseService<$entityClass, $primaryKeyType, $daoClass, $repositoryClass> {
 }

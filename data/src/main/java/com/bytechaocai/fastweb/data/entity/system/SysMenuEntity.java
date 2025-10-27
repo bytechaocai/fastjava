@@ -1,4 +1,3 @@
-
 package com.bytechaocai.fastweb.data.entity.system;
 
 import jakarta.persistence.Column;
@@ -103,6 +102,7 @@ public class SysMenuEntity implements Serializable {
     public void setMenuId(String menuId) {
         this.menuId = menuId;
     }
+
     public String getName() {
         return this.name;
     }
@@ -110,6 +110,7 @@ public class SysMenuEntity implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getParentId() {
         return this.parentId;
     }
@@ -117,6 +118,7 @@ public class SysMenuEntity implements Serializable {
     public void setParentId(String parentId) {
         this.parentId = parentId;
     }
+
     public Short getMenuOrder() {
         return this.menuOrder;
     }
@@ -124,6 +126,7 @@ public class SysMenuEntity implements Serializable {
     public void setMenuOrder(Short menuOrder) {
         this.menuOrder = menuOrder;
     }
+
     public String getUrl() {
         return this.url;
     }
@@ -131,6 +134,7 @@ public class SysMenuEntity implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
+
     public Short getTarget() {
         return this.target;
     }
@@ -138,6 +142,7 @@ public class SysMenuEntity implements Serializable {
     public void setTarget(Short target) {
         this.target = target;
     }
+
     public Short getType() {
         return this.type;
     }
@@ -145,6 +150,7 @@ public class SysMenuEntity implements Serializable {
     public void setType(Short type) {
         this.type = type;
     }
+
     public Short getStatus() {
         return this.status;
     }
@@ -152,6 +158,7 @@ public class SysMenuEntity implements Serializable {
     public void setStatus(Short status) {
         this.status = status;
     }
+
     public String getPermission() {
         return this.permission;
     }
@@ -159,6 +166,7 @@ public class SysMenuEntity implements Serializable {
     public void setPermission(String permission) {
         this.permission = permission;
     }
+
     public String getIcon() {
         return this.icon;
     }
@@ -166,6 +174,7 @@ public class SysMenuEntity implements Serializable {
     public void setIcon(String icon) {
         this.icon = icon;
     }
+
     public String getDescription() {
         return this.description;
     }
@@ -173,6 +182,7 @@ public class SysMenuEntity implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public String getCreateBy() {
         return this.createBy;
     }
@@ -180,6 +190,7 @@ public class SysMenuEntity implements Serializable {
     public void setCreateBy(String createBy) {
         this.createBy = createBy;
     }
+
     public LocalDateTime getCreateTime() {
         return this.createTime;
     }
@@ -187,6 +198,7 @@ public class SysMenuEntity implements Serializable {
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
+
     public String getUpdateBy() {
         return this.updateBy;
     }
@@ -194,6 +206,7 @@ public class SysMenuEntity implements Serializable {
     public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
     }
+
     public LocalDateTime getUpdateTime() {
         return this.updateTime;
     }

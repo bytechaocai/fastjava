@@ -1,9 +1,8 @@
-
 package com.bytechaocai.fastweb.data.entity.system;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.IdClass;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.io.Serial;
@@ -16,17 +15,18 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "sys_enum_value")
-@IdClass(SysEnumValuePK.class)
 public class SysEnumValueEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     /**
      * 类型代码。
      */
+    @Id
     private String enumType;
     /**
      * 类型值。
      */
+    @Column(name = "enum_value", nullable = false)
     private String enumValue;
     /**
      * 枚举值的翻译。
@@ -61,6 +61,7 @@ public class SysEnumValueEntity implements Serializable {
     public void setEnumType(String enumType) {
         this.enumType = enumType;
     }
+
     public String getEnumValue() {
         return this.enumValue;
     }
@@ -68,6 +69,7 @@ public class SysEnumValueEntity implements Serializable {
     public void setEnumValue(String enumValue) {
         this.enumValue = enumValue;
     }
+
     public String getEnumName() {
         return this.enumName;
     }
@@ -75,6 +77,7 @@ public class SysEnumValueEntity implements Serializable {
     public void setEnumName(String enumName) {
         this.enumName = enumName;
     }
+
     public Short getEnumSort() {
         return this.enumSort;
     }
@@ -82,6 +85,7 @@ public class SysEnumValueEntity implements Serializable {
     public void setEnumSort(Short enumSort) {
         this.enumSort = enumSort;
     }
+
     public Byte getEnumDefault() {
         return this.enumDefault;
     }
@@ -89,6 +93,7 @@ public class SysEnumValueEntity implements Serializable {
     public void setEnumDefault(Byte enumDefault) {
         this.enumDefault = enumDefault;
     }
+
     public Short getEnumStatus() {
         return this.enumStatus;
     }
@@ -96,6 +101,7 @@ public class SysEnumValueEntity implements Serializable {
     public void setEnumStatus(Short enumStatus) {
         this.enumStatus = enumStatus;
     }
+
     public String getEnumDescription() {
         return this.enumDescription;
     }

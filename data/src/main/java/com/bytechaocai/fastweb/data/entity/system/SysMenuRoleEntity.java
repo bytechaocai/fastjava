@@ -1,4 +1,3 @@
-
 package com.bytechaocai.fastweb.data.entity.system;
 
 import jakarta.persistence.Column;
@@ -48,6 +47,7 @@ public class SysMenuRoleEntity implements Serializable {
     public void setRmId(String rmId) {
         this.rmId = rmId;
     }
+
     public String getRoleId() {
         return this.roleId;
     }
@@ -55,6 +55,7 @@ public class SysMenuRoleEntity implements Serializable {
     public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
+
     public String getMenuId() {
         return this.menuId;
     }
@@ -62,6 +63,7 @@ public class SysMenuRoleEntity implements Serializable {
     public void setMenuId(String menuId) {
         this.menuId = menuId;
     }
+
     public LocalDateTime getCreateTime() {
         return this.createTime;
     }

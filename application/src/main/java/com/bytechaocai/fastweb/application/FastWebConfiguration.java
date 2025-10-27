@@ -3,6 +3,7 @@ package com.bytechaocai.fastweb.application;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -20,7 +21,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 })
 @MapperScan(basePackages = {"com.bytechaocai.fastweb.data.dao"})
 @EnableJpaRepositories(basePackages = {"com.bytechaocai.fastweb.data.repository"})
-// @EntityScan(basePackages = {"com.bytechaocai.fastweb.data.entity"})
+@EntityScan(basePackages = {"com.bytechaocai.fastweb.data.entity"})
 @EnableAutoConfiguration
 public class FastWebConfiguration {
 }

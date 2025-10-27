@@ -1,4 +1,3 @@
-
 package com.bytechaocai.fastweb.data.entity.system;
 
 import jakarta.persistence.Column;
@@ -47,6 +46,7 @@ public class SysEnumEntity implements Serializable {
     public void setEnumType(String enumType) {
         this.enumType = enumType;
     }
+
     public String getEnumName() {
         return this.enumName;
     }
@@ -54,6 +54,7 @@ public class SysEnumEntity implements Serializable {
     public void setEnumName(String enumName) {
         this.enumName = enumName;
     }
+
     public String getEnumDescription() {
         return this.enumDescription;
     }
@@ -61,6 +62,7 @@ public class SysEnumEntity implements Serializable {
     public void setEnumDescription(String enumDescription) {
         this.enumDescription = enumDescription;
     }
+
     public Short getEnumStatus() {
         return this.enumStatus;
     }

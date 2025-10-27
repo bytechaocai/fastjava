@@ -13,7 +13,7 @@
 ##仓库对象
 #set($repositoryClass = "${crudConfig.entityName}Repository")
 #set($repositoryPackage = "${crudConfig.rootPackage}.data.repository.${crudConfig.daoPackage}")
-#set($fullRepositoryClass = "${daoPackage}.${repositoryClass}")
+#set($fullRepositoryClass = "${repositoryPackage}.${repositoryClass}")
 ##服务对象
 #set($serviceClass = "${crudConfig.entityName}Service")
 #set($servicePackage = "${crudConfig.rootPackage}.service.base.${crudConfig.servicePackage}")

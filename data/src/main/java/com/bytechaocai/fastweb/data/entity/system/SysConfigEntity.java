@@ -1,4 +1,3 @@
-
 package com.bytechaocai.fastweb.data.entity.system;
 
 import jakarta.persistence.Column;
@@ -47,6 +46,7 @@ public class SysConfigEntity implements Serializable {
     public void setConfigCode(String configCode) {
         this.configCode = configCode;
     }
+
     public String getConfigName() {
         return this.configName;
     }
@@ -54,6 +54,7 @@ public class SysConfigEntity implements Serializable {
     public void setConfigName(String configName) {
         this.configName = configName;
     }
+
     public String getConfigValue() {
         return this.configValue;
     }
@@ -61,6 +62,7 @@ public class SysConfigEntity implements Serializable {
     public void setConfigValue(String configValue) {
         this.configValue = configValue;
     }
+
     public String getConfigDescription() {
         return this.configDescription;
     }

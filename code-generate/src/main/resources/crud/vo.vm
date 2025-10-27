@@ -6,10 +6,10 @@ import $fullEntityClass;
 import java.io.Serial;
 
 /**
-* ${crudConfig.tableComment} 视图对象。
-*
-* @author ${crudConfig.author}
-*/
+ * ${crudConfig.tableComment} 视图对象。
+ *
+ * @author ${crudConfig.author}
+ */
 public class $voClass extends $entityClass {
     @Serial
     private static final long serialVersionUID = 1L;

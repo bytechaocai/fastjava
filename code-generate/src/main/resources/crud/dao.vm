@@ -7,10 +7,10 @@ import $fullEntityClass;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
-* ${crudConfig.tableComment} 数据操作对象。
-*
-* @author ${crudConfig.author}
-*/
+ * ${crudConfig.tableComment} 数据操作对象。
+ *
+ * @author ${crudConfig.author}
+ */
 @Mapper
 public interface $daoClass extends BaseDAO<$entityClass, $primaryKeyType> {
 }

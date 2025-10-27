@@ -1,4 +1,3 @@
-
 package com.bytechaocai.fastweb.data.entity.system;
 
 import jakarta.persistence.Column;
@@ -52,6 +51,7 @@ public class SysMessageEntity implements Serializable {
     public void setMessageCode(String messageCode) {
         this.messageCode = messageCode;
     }
+
     public String getMessageText() {
         return this.messageText;
     }
@@ -59,6 +59,7 @@ public class SysMessageEntity implements Serializable {
     public void setMessageText(String messageText) {
         this.messageText = messageText;
     }
+
     public Short getMessageType() {
         return this.messageType;
     }
@@ -66,6 +67,7 @@ public class SysMessageEntity implements Serializable {
     public void setMessageType(Short messageType) {
         this.messageType = messageType;
     }
+
     public Short getMessageStatus() {
         return this.messageStatus;
     }
@@ -73,6 +75,7 @@ public class SysMessageEntity implements Serializable {
     public void setMessageStatus(Short messageStatus) {
         this.messageStatus = messageStatus;
     }
+
     public String getMessageDescription() {
         return this.messageDescription;
     }

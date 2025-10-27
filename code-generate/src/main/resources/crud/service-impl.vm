@@ -7,11 +7,14 @@ import $fullDaoClass;
 import $fullRepositoryClass;
 import $fullServiceClass;
 
+import org.springframework.stereotype.Service;
+
 /**
-* $crudConfig.tableComment 服务实现。
-*
-* @author $crudConfig.author
-*/
+ * $crudConfig.tableComment 服务实现。
+ *
+ * @author $crudConfig.author
+ */
+@Service
 public class ${serviceClass}Impl extends BaseServiceImpl<$entityClass, $primaryKeyType, $daoClass, $repositoryClass>
     implements $serviceClass {
 }

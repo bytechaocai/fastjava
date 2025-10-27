@@ -358,5 +358,6 @@ public class CrudGenerator {
             }
             LOGGER.info("模板文件{}解析完成", entry.getKey());
         }
+        crudConfig.getPackageList().clear();
     }
 }

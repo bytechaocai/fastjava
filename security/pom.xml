@@ -26,6 +26,10 @@
       <groupId>com.bytechaocai.fastweb</groupId>
       <artifactId>data</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.bytechaocai.fastweb</groupId>
+      <artifactId>service</artifactId>
+    </dependency>
 
     <!--安全 开始-->
     <dependency>

@@ -1,5 +1,5 @@
 #parse("crud/base.vm")
-package $daoPackage;
+package $repositoryPackage;
 
 import $fullEntityClass;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
-* $crudConfig.tableComment 仓库。
-*
-* @author $crudConfig.author
-*/
+ * $crudConfig.tableComment 仓库。
+ *
+ * @author $crudConfig.author
+ */
 @Repository
 public interface $repositoryClass extends JpaRepository<$entityClass, String>, JpaSpecificationExecutor<$entityClass> {
 }

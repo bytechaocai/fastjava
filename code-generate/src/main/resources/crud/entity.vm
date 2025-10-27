@@ -30,11 +30,11 @@ public class ${entityClass} implements Serializable {
     @Id
     #else
     @Column(name = "${item.columnName}"#if (!$item.isNullable), nullable = false#end)
-   #end
+    #end
     private ${item.javaType} ${item.fieldName};
-   #end
-
+    #end
     #foreach ($item in $crudConfig.columnList)
+
     public ${item.javaType} get${item.upperCamelFieldName}() {
         return this.${item.fieldName};
     }
@@ -42,6 +42,6 @@ public class ${entityClass} implements Serializable {
     public void set${item.upperCamelFieldName}(${item.javaType} ${item.fieldName}) {
         this.${item.fieldName} = ${item.fieldName};
     }
-   #end
+    #end
 }
 

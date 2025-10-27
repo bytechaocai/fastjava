@@ -1,4 +1,3 @@
-
 package com.bytechaocai.fastweb.data.entity.system;
 
 import jakarta.persistence.Column;
@@ -103,6 +102,7 @@ public class SysUserEntity implements Serializable {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
     public String getLoginName() {
         return this.loginName;
     }
@@ -110,6 +110,7 @@ public class SysUserEntity implements Serializable {
     public void setLoginName(String loginName) {
         this.loginName = loginName;
     }
+
     public String getUserName() {
         return this.userName;
     }
@@ -117,6 +118,7 @@ public class SysUserEntity implements Serializable {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
     public Short getUserType() {
         return this.userType;
     }
@@ -124,6 +126,7 @@ public class SysUserEntity implements Serializable {
     public void setUserType(Short userType) {
         this.userType = userType;
     }
+
     public String getEmail() {
         return this.email;
     }
@@ -131,6 +134,7 @@ public class SysUserEntity implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getPhoneNumber() {
         return this.phoneNumber;
     }
@@ -138,6 +142,7 @@ public class SysUserEntity implements Serializable {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
     public Short getGender() {
         return this.gender;
     }
@@ -145,6 +150,7 @@ public class SysUserEntity implements Serializable {
     public void setGender(Short gender) {
         this.gender = gender;
     }
+
     public String getPassword() {
         return this.password;
     }
@@ -152,6 +158,7 @@ public class SysUserEntity implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
     public String getSalt() {
         return this.salt;
     }
@@ -159,6 +166,7 @@ public class SysUserEntity implements Serializable {
     public void setSalt(String salt) {
         this.salt = salt;
     }
+
     public Short getStatus() {
         return this.status;
     }
@@ -166,6 +174,7 @@ public class SysUserEntity implements Serializable {
     public void setStatus(Short status) {
         this.status = status;
     }
+
     public String getDescription() {
         return this.description;
     }
@@ -173,6 +182,7 @@ public class SysUserEntity implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public String getCreateBy() {
         return this.createBy;
     }
@@ -180,6 +190,7 @@ public class SysUserEntity implements Serializable {
     public void setCreateBy(String createBy) {
         this.createBy = createBy;
     }
+
     public LocalDateTime getCreateTime() {
         return this.createTime;
     }
@@ -187,6 +198,7 @@ public class SysUserEntity implements Serializable {
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
+
     public String getUpdateBy() {
         return this.updateBy;
     }
@@ -194,6 +206,7 @@ public class SysUserEntity implements Serializable {
     public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
     }
+
     public LocalDateTime getUpdateTime() {
         return this.updateTime;
     }
