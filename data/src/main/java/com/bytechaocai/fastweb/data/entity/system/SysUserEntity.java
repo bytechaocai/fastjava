@@ -23,6 +23,7 @@ public class SysUserEntity implements Serializable {
      * 用户标识。
      */
     @Id
+    @Column(name = "user_id", nullable = false)
     private String userId;
     /**
      * 登录名。

@@ -1,3 +1,4 @@
+
 package com.bytechaocai.fastweb.data.repository.system;
 
 import com.bytechaocai.fastweb.data.entity.system.SysUserEntity;
@@ -11,6 +12,5 @@ import org.springframework.stereotype.Repository;
  * @author bytechaocai
  */
 @Repository
-public interface SysUserRepository
-        extends JpaRepository<SysUserEntity, String>, JpaSpecificationExecutor<SysUserEntity> {
+public interface SysUserRepository extends JpaRepository<SysUserEntity, String>, JpaSpecificationExecutor<SysUserEntity> {
 }

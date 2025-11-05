@@ -1,3 +1,4 @@
+
 package com.bytechaocai.fastweb.service.impl.system;
 
 import com.bytechaocai.fastweb.data.dao.system.SysUserDAO;
@@ -14,5 +15,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysUserServiceImpl extends BaseServiceImpl<SysUserEntity, String, SysUserDAO, SysUserRepository>
-        implements SysUserService {
+    implements SysUserService {
 }

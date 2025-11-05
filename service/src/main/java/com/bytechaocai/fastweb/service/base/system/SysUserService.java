@@ -1,3 +1,4 @@
+
 package com.bytechaocai.fastweb.service.base.system;
 
 import com.bytechaocai.fastweb.data.dao.system.SysUserDAO;

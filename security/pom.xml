@@ -41,5 +41,10 @@
       <artifactId>spring-session-core</artifactId>
     </dependency>
     <!--安全 结束-->
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
   </dependencies>
 </project>

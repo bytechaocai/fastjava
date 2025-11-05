@@ -28,9 +28,8 @@ public class ${entityClass} implements Serializable {
      */
     #if ($item.isPrimaryKey)
     @Id
-    #else
-    @Column(name = "${item.columnName}"#if (!$item.isNullable), nullable = false#end)
     #end
+    @Column(name = "${item.columnName}"#if (!$item.isNullable), nullable = false#end)
     private ${item.javaType} ${item.fieldName};
     #end
     #foreach ($item in $crudConfig.columnList)
